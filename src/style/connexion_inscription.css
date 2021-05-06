@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Padauk&display=swap');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #CCC;
+    font-size: 16px;
+    text-align: center;
+    font-family: 'Padauk', sans-serif;
+}
+
+form {
+    margin-top: 5px;
+}
+
+input {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    padding: .7em;
+}
+
+button {
+    font-size: 16px;
+    margin-top: 1.5em;
+    padding: .7em;
+    font-weight: bold;
+    background-color: #5f14ff;
+    color: #FFF;
+    border-style: none;
+    border-radius: 7px;
+}
+
+button:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 4px 3px 1px #014ca9;
+    background-color: #007bff;
+}
+
+button:not(:hover) {
+    transition: 0.3s;
+    background-color: #5f14ff;
+}
+
+button:active {
+    box-shadow: 0 0 6px 2px #000d7a inset;
+    background-color: #4c00ff;
+}
+
+p {
+    margin-top: 1em;
+}
+
+#main {
+    background-color: #FFF;
+    width: 70vh;
+    height: auto;
+    padding: .5em;
+    margin: 0 auto;
+    border-radius: 5px;
+    margin-top: 4em;
+}
+
+.error {
+    margin: 0 auto;
+    padding: .5em;
+    width: max-content;
+    height: auto;
+    background-color: red;
+    border-radius: 20px;
+    color: white;
+}
+
+.success {
+    margin: 0 auto;
+    margin-bottom: 1.3em;
+    padding: .6em;
+    width: max-content;
+    height: auto;
+    background-color: green;
+    border-radius: 20px;
+    color: white;
+}

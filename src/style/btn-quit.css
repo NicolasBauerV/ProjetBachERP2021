@@ -1,0 +1,28 @@
+#btn-quit {
+    background-color: #ff3300;
+    color: #FFF;
+    border-style: none;
+    border-radius: 7px;
+    display: block;
+    margin: auto;
+    font-size: 16px;
+    padding: .7em;
+    font-weight: bold;
+    transition: 0.3s;
+    margin: 1em auto;
+}
+
+#btn-quit:hover {
+    box-shadow: 4px 3px 1px #bf4f00;
+    background-color: #ff6600;
+}
+
+#btn-quit:not(:hover) {
+    transition: 0.3s;
+    background-color: #ff3300;
+}
+
+#btn-quit:active {
+    box-shadow: 0 0 6px 3px #700000 inset;
+    background-color: #ae2100;
+}

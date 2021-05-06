@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Padauk&display=swap');
+
+html, body {
+    font-family: 'Padauk', sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    background-color: #CCC;
+    text-align: center;
+}
+
+#main {
+    margin: 1em auto;
+    width: 50%;
+    height: auto;
+    background-color: #FFF;
+    padding: .6px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, .55);
+}
+
+form {
+    padding: 1em;
+}
+
+label {
+    display: block;
+}
+
+form input {
+    padding: .6em;
+    margin: 1em auto;
+}
+
+img {
+    width: 150px;
+    height: auto;
+    border-radius: 80px;
+}
+
+#btn-sub {
+    display: block;
+    margin: auto;
+    font-size: 16px;
+    padding: .7em;
+    font-weight: bold;
+    background-color: #5f14ff;
+    color: #FFF;
+    border-style: none;
+    border-radius: 7px;
+}
+
+#btn-sub:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 4px 3px 1px #014ca9;
+    background-color: #007bff;
+}
+
+#btn-sub:not(:hover) {
+    transition: 0.3s;
+    background-color: #5f14ff;
+}
+
+#btn-sub:active {
+    box-shadow: 0 0 6px 2px #000d7a inset;
+    background-color: #4c00ff;
+}

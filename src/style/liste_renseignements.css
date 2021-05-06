@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Padauk&display=swap');
+
+body {
+    font-size: 16px;
+    font-family: 'Padauk', sans-serif;
+    background-color: #CCC;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    background-color: #FFFFFF;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px black;
+}
+
+header ul li {
+    list-style: none;
+    border: 1px solid black;
+    padding: .5em;
+    margin-right: .4em;
+}
+
+header ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+p {
+    display: none;
+    overflow-wrap: break-word;
+}
+
+div#container {
+    margin-top: 5vh;
+    display: flex;
+    justify-content: center;
+}
+
+#main {
+    width: max-content;
+    height: 60vh;
+    /*margin: 2em auto;*/
+    overflow: scroll;
+    padding: 1em;
+    background-color: #FFFFFF;
+    box-shadow: 4px 4px 3px rgb(69, 69, 69);
+    text-align: center;
+    border-radius: 15px;
+}
+
+#tableDiv {
+    height: 41.9vh;
+    overflow: scroll;
+}
+
+#child {
+    display: none;
+    width: 65vh;
+    height: 40vh;
+    /*margin: 2em auto;*/
+    padding: 1em;
+    background-color: #FFFFFF;
+    box-shadow: 4px 4px 3px rgb(69, 69, 69);
+    border-radius: 15px;
+    overflow-y: scroll;
+}
+
+.table {
+    border: black solid 1px;
+    border-collapse: collapse;
+}
+
+.table td {
+    padding: 7px 15px;
+}
+
+button {
+    font-size: 16px;
+    padding: .7em;
+    font-weight: bold;
+    background-color: #5f14ff;
+    color: #FFF;
+    border-style: none;
+    border-radius: 7px;
+}
+
+
+button:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 4px 3px 1px #014ca9;
+    background-color: #007bff;
+}
+
+button:not(:hover) {
+    transition: 0.3s;
+    background-color: #5f14ff;
+}
+
+button:active {
+    box-shadow: 0 0 6px 2px #000d7a inset;
+    background-color: #007bff;
+}
+
+#retour {
+    margin-top: 1em;
+}

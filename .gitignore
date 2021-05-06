@@ -1,0 +1,11 @@
+#Directories
+src/scripts/node_modules
+/vendor/
+*.pdf
+
+#files
+composer.phar
+composer-setup.php
+composer.json
+composer.lock
+DS_Store
