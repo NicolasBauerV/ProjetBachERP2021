@@ -1,5 +1,4 @@
 <?php
-    mail("bauer.nicolas266@gmail.com", "test", "ceci est un test");
     require 'connexion_déconnexion/bdd_connexion.php';
 
     // traitement des informations
@@ -12,16 +11,23 @@
         $newsletter = $_POST['newsletter'];
         $message = $_POST['message'];
 
+        setcookie('email', htmlspecialchars($email), time() + 24 * 3600, null, null, false, true);
+
         if ($newsletter == "on") {
             $newsletter = '1';
-            // header('location: ../pages/validation_checkBox.php?nom='.$nom.'&prenom='.$prenom.'&email='.$email.'&formation='.$formation.'&tel='.$tel.'&msg='.$message);
-        } else {
-            $newsletter = '0';
+            $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
+            $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
+            header('location: ./formulaire_renseignement.php?success=1');
+            exit();
         }
-        $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
-        header('location: ../pages/formulaire_renseignement.php?success=1');
-        exit();
+
+        if (empty($newsletter)) {
+            $newsletter = '0';
+            $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
+            $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
+            header('Location: ./validation_checkBox.php');
+            exit();
+        }
     }
 ?>
 
@@ -49,9 +55,9 @@
             <br>
             <select required name="cycle" id="cycle">
                 <option value="">*Choisissez une formation</option>
-                <option value="Cycle 1">Cycle 1</option>
-                <option value="Cycle 2">Cycle 2</option>
-                <option value="Cycle 3">Cycle 3</option>
+                <option value="Cycle-1">Cycle 1</option>
+                <option value="Cycle-2">Cycle 2</option>
+                <option value="Cycle-3">Cycle 3</option>
             </select>
             <br>
             <input required type="email" name="email" id="email" placeholder="*Votre email :">

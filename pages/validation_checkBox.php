@@ -1,26 +1,23 @@
 <?php 
     require 'connexion_déconnexion/bdd_connexion.php';
-    if (!empty($_POST["email"])) {
-        $nom = $_GET['nom'];
-        $prenom = $_GET['prenom'];
-        $email = $_GET['email'];
-        $formation = $_GET['formation'];
-        $tel = $_GET['tel'];
-        $message = $_GET['msg'];
+    $emailVerif = $_COOKIE['email'];
+    var_dump($emailVerif);
+    if (!empty($_POST["emailConf"])) {
+        $email = $_POST["emailConf"];
         $valid = $_POST["newsletter-sure"];
-        var_dump($nom);
-        var_dump($prenom);
-        var_dump($email);
-        var_dump($formation);
-        var_dump($tel);
-        var_dump($message);
-        if ($email == $_POST["email"] && $valid == "on") {
-        } else {
-            echo "<p class=\"error\">Votre email ne correspond pas à celui que vous avez envoyé auparavant...</p>";
+        if ($email == $emailVerif && $valid == "on") {
+            $valid = 1;
+            try {
+                $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
+                $request->execute(array($valid, $email));
+                header('Location: ./validation_checkBox.php?success=1');
+            } catch (Exception $e) {
+                echo '<p class="error">Nous n\'avons pas pus obtenir vos informations, veuillez réessayer...';
+                sleep(4);
+                header('Location: ./formulaire_renseignement.php');
+                exit();
+            }
         }
-        $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $request->execute(array($nom, $prenom, $email, $formation, $tel, $valid, $message));
-        echo "<p class=\"success\">Nous avons bien reçu vos informations</p>";
     }
 ?>
 
@@ -36,6 +33,14 @@
 <body>
     <form id="form-sure" method="post" action="validation_checkBox.php">
         <h2>Êtes-vous sûr.e de ne pas vouloir recevoir les newsletters ?</h2>
+        <h3>
+            <?php 
+                if (isset($_GET['success'])) {
+                    echo '<p class="success">Nous avons bien reçu vos informations</p>';
+                    die(); 
+                }
+            ?>
+        </h3>
         <label for="emailConf">
             <span>Confirmer l'email pour recevoir les newsletter :</span>
             <input type="email" name="emailConf" id="emailConf" placeholder="Confirmer votre email :">
@@ -50,6 +55,7 @@
     </form>
 
    <!-- <script type="text/javascript">
+        document.write('<p class=\"error\">Votre email ne correspond pas à celui que vous avez envoyé auparavant...</p>');
         // let emailInput = document.querySelector('#emailConf');
         // let checkInput = document.querySelector('#newsletter-sure');
         // if(emailInput.value != "") {

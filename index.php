@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ludus-ERP : Index</title>
-    <link type="text/css" rel="stylesheet" href="../src/style/index.css?t=<? echo time(); ?>"/>
+    <link type="text/css" rel="stylesheet" href="./src/style/index.css?t=<? echo time(); ?>"/>
 </head>
 <body>
     <header>
@@ -13,8 +13,8 @@
     <div id="wrapper">
         <div id="items">
             <ul>
-                <button onclick="location.href='./accueil.php'">Accueil administration</button>
-                <button onclick="location.href='./formulaire_renseignement.php'">Formulaire renseignement</button>
+                <button onclick="location.href='./pages/accueil.php'">Accueil administration</button>
+                <button onclick="location.href='./pages/formulaire_renseignement.php'">Formulaire renseignement</button>
             </ul>
         </div>
     </div>
