@@ -40,7 +40,7 @@ div#container {
 
 #main {
     width: max-content;
-    height: 60vh;
+    height: auto;
     /*margin: 2em auto;*/
     overflow: scroll;
     padding: 1em;
@@ -84,6 +84,7 @@ button {
     color: #FFF;
     border-style: none;
     border-radius: 7px;
+    margin-bottom: -1em;
 }
 
 
