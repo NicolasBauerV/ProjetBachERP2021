@@ -48,7 +48,8 @@
                 if (isset($_GET['pass'])) {
                     echo '<p class="error">Attention le mot de passe n\'est pas identique</p>';
                 }
-            } elseif (isset($_GET['user'])) {
+            }
+            if (isset($_GET['user']) && isset($_GET['error'])) {
                 echo '<p class="error">Attention le nom d\'utilisateur existe déjà</p>';
             } elseif (isset($_GET['success'])) {
                 echo '<p class="success">Vous êtes inscrit.e</p>';

@@ -1,6 +1,5 @@
 <?php
     require 'connexion_déconnexion/bdd_connexion.php';
-
     // traitement des informations
     if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['cycle']) && !empty($_POST['email']) && !empty($_POST['tel']) && !empty($_POST['message'])) {
         $nom = $_POST['nom'];
@@ -8,16 +7,17 @@
         $formation = $_POST['cycle'];
         $email = $_POST['email'];
         $tel = $_POST['tel'];
-        $newsletter = $_POST['newsletter'];
+        $newsletter = null;
+        if (isset($_POST['newsletter'])) {
+            $newsletter = $_POST['newsletter'];
+        }
         $message = $_POST['message'];
-
         setcookie('email', htmlspecialchars($email), time() + 24 * 3600, null, null, false, true);
-
         if ($newsletter == "on") {
             $newsletter = '1';
             $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
-            header('location: ./formulaire_renseignement.php?success=1');
+            header('Location:./formulaire_renseignement.php?success=1');
             exit();
         }
 

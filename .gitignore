@@ -2,6 +2,7 @@
 src/scripts/node_modules
 /vendor/
 *.pdf
+*.code-workspace
 
 #files
 composer.phar

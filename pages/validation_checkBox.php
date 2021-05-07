@@ -1,16 +1,35 @@
-<?php 
+<?php
+ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
     $emailVerif = $_COOKIE['email'];
     var_dump($emailVerif);
     if (!empty($_POST["emailConf"])) {
         $email = $_POST["emailConf"];
-        $valid = $_POST["newsletter-sure"];
+        $valid = null;
+        if (isset($_POST['newsletter-sure'])) {
+            $valid = $_POST["newsletter-sure"];
+        }
         if ($email == $emailVerif && $valid == "on") {
             $valid = 1;
             try {
                 $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
                 $request->execute(array($valid, $email));
+                header('Location: ../pages/validation_checkBox.php?success=1');
+                exit();
+            } catch (Exception $e) {
+                echo '<p class="error">Nous n\'avons pas pus obtenir vos informations, veuillez réessayer...';
+                sleep(4);
+                header('Location: ../pages/formulaire_renseignement.php');
+                exit();
+            }
+        }
+        if (empty($valid)) {
+            $valid = '0';
+            try {
+                $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
+                $request->execute(array($valid, $email));
                 header('Location: ./validation_checkBox.php?success=1');
+                var_dump($valid);
             } catch (Exception $e) {
                 echo '<p class="error">Nous n\'avons pas pus obtenir vos informations, veuillez réessayer...';
                 sleep(4);
@@ -19,6 +38,7 @@
             }
         }
     }
+    ob_end_flush(); // libère les données retenues
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +62,8 @@
             ?>
         </h3>
         <label for="emailConf">
-            <span>Confirmer l'email pour recevoir les newsletter :</span>
-            <input type="email" name="emailConf" id="emailConf" placeholder="Confirmer votre email :">
+            <span>Confirmer l'email pour envoyer la demande :</span>
+            <input type="email" name="emailConf" id="emailConf" placeholder="Confirmer votre email :" required>
         </label>
         <br>
         <label for="newsletter-sure">
