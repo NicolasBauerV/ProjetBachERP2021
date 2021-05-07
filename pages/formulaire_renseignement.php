@@ -47,44 +47,43 @@
             }
         ?>
     </header>
-    <form id="form1" method="post" action="formulaire_renseignement.php">
-        <section class="petit-container">
-            <input required type="text" name="nom" id="nom" placeholder="*Votre nom :">
+    <div id="wrapper">
+        <form method="post" action="formulaire_renseignement.php">
+            <section class="petit-container">
+                <input required type="text" name="nom" id="nom" placeholder="*Votre nom :">
+                <input required type="text" name="prenom" id="prenom" placeholder="*Votre prenom :">
+                <select required name="cycle" id="cycle">
+                    <option value="">*Choisissez une formation</option>
+                    <option value="Cycle-1">Cycle 1</option>
+                    <option value="Cycle-2">Cycle 2</option>
+                    <option value="Cycle-3">Cycle 3</option>
+                </select>
+                <input required type="email" name="email" id="email" placeholder="*Votre email :">
+                <input required type="text" name="tel" id="tel" placeholder="*Numero tel :">
+                <label for="newsletter">
+                    <input type="checkbox" name="newsletter" id="newsletter"> Recevoir les newsletters, <br> (Portes ouvertes, Réunions d'informations)
+                </label>
+            </section>
+            <section class="petit-container">
+                <textarea required name="message" id="message" cols="50" rows="10" placeholder="*Rédiger votre message..."></textarea>
+            </section>
+            <section id="contact" class="petit-container">
+                <h2>Contact</h2>
+                <h4>N° Téléphone</h4>
+                <p style="color: red">
+                    +33(0) 3 90 20 21 77
+                    <br>
+                    +33(0) 6 95 34 85 67
+                </p>
+                <h4>Adresse Postal</h4>
+                <p style="color: red">24 Place des Halles 67000 Strasbourg</p>
+                <h4>Email de contact</h4>
+                <a href="mailto:contact@ludus-academie.fr">contact@ludus-academie.fr</a>
+            </section>
             <br>
-            <input required type="text" name="prenom" id="prenom" placeholder="*Votre prenom :">
-            <br>
-            <select required name="cycle" id="cycle">
-                <option value="">*Choisissez une formation</option>
-                <option value="Cycle-1">Cycle 1</option>
-                <option value="Cycle-2">Cycle 2</option>
-                <option value="Cycle-3">Cycle 3</option>
-            </select>
-            <br>
-            <input required type="email" name="email" id="email" placeholder="*Votre email :">
-            <br>
-            <input required type="text" name="tel" id="tel" placeholder="*Numero tel :">
-            <br>
-            <label for="newsletter">
-                <input type="checkbox" name="newsletter" id="newsletter"> Recevoir les newsletters, <br> (Portes ouvertes, Réunions d'informations)
-            </label>
-        </section>
-        <section class="petit-container">
-            <textarea required name="message" id="message" cols="50" rows="10" placeholder="*Rédiger votre message..."></textarea>
-        </section>
-        <section id="contact" class="petit-container">
-            <h2>Contact</h2>
-            <h4>N° Téléphone</h4>
-            <p style="color: red">
-                +33(0) 3 90 20 21 77
-                <br>
-                +33(0) 6 95 34 85 67
-            </p>
-            <h4>Adresse Postal</h4>
-            <p style="color: red">24 Place des Halles 67000 Strasbourg</p>
-            <h4>Email de contact</h4>
-            <a href="mailto:contact@ludus-academie.fr">contact@ludus-academie.fr</a>
-        </section>
-        <button id="btn-send">Envoyer</button>
-    </form>
+            <button id="btn-send">Envoyer</button>
+        </form>
+    </div>
+    
 </body>
 </html>
