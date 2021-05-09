@@ -1,0 +1,37 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+    background-color: indigo;
+}
+
+header {
+    margin-top: 5vh;
+}
+
+#liens {
+    margin: 0 auto;
+    margin-top: 25vh;
+    width: max-content;
+    height: max-content;
+}
+
+a {
+    background-color: rgb(223, 0, 0);
+    box-shadow: 4px 3px 2px rgb(120, 1, 1);
+    text-decoration: none;
+    color: white;
+    padding: 1em;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: bold;   
+}
+
+a:active {
+    transition: .25s;
+    box-shadow: 1px 0px 3px 2px rgb(102, 0, 0) inset;
+}

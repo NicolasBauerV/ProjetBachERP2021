@@ -1,6 +1,7 @@
 <?php
 ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
+    require './email.php';
     $emailVerif = $_COOKIE['email'];
     var_dump($emailVerif);
     if (!empty($_POST["emailConf"])) {
@@ -14,6 +15,7 @@ ob_start(); // retenir l’envoi de données
             try {
                 $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
                 $request->execute(array($valid, $email));
+                sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
                 header('Location: ../pages/validation_checkBox.php?success=1');
                 exit();
             } catch (Exception $e) {
@@ -28,8 +30,9 @@ ob_start(); // retenir l’envoi de données
             try {
                 $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
                 $request->execute(array($valid, $email));
+                sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
                 header('Location: ./validation_checkBox.php?success=1');
-                var_dump($valid);
+                die();
             } catch (Exception $e) {
                 echo '<p class="error">Nous n\'avons pas pus obtenir vos informations, veuillez réessayer...';
                 sleep(4);
@@ -52,12 +55,15 @@ ob_start(); // retenir l’envoi de données
 </head>
 <body>
     <form id="form-sure" method="post" action="validation_checkBox.php">
-        <h2>Êtes-vous sûr.e de ne pas vouloir recevoir les newsletters ?</h2>
+        <?php 
+            if (!isset($_GET['success'])) {
+                echo '<h2>Êtes-vous sûr.e de ne pas vouloir recevoir les newsletters ?</h2>';
+            }
+        ?>
         <h3>
             <?php 
                 if (isset($_GET['success'])) {
-                    echo '<p class="success">Nous avons bien reçu vos informations</p>';
-                    die(); 
+                    echo '<p class="success">Nous avons bien reçu vos informations, un email vous a été envoyer</p>';
                 }
             ?>
         </h3>

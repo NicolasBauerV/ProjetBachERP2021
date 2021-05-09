@@ -1,5 +1,7 @@
 <?php
+ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
+    require './email.php';
     // traitement des informations
     if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['cycle']) && !empty($_POST['email']) && !empty($_POST['tel']) && !empty($_POST['message'])) {
         $nom = $_POST['nom'];
@@ -12,11 +14,18 @@
             $newsletter = $_POST['newsletter'];
         }
         $message = $_POST['message'];
+
+        //Cookies
         setcookie('email', htmlspecialchars($email), time() + 24 * 3600, null, null, false, true);
+        setcookie('nom', htmlspecialchars($nom), time() + 24 * 3600, null, null, false, true);
+        setcookie('prenom', htmlspecialchars($prenom), time() + 24 * 3600, null, null, false, true);
+
+
         if ($newsletter == "on") {
             $newsletter = '1';
             $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
+            sendMail($email, $nom, $prenom); // envoie d'email
             header('Location:./formulaire_renseignement.php?success=1');
             exit();
         }
@@ -29,13 +38,14 @@
             exit();
         }
     }
+    ob_end_flush(); // libère les données retenues
 ?>
 
 <!Doctype html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ludus-Net : Renseignement</title>
+    <title>Ludus-ERP : Renseignement</title>
     <link type="text/css" rel="stylesheet" href="../src/style/formulaire.css?t=<? echo time(); ?>"/>
 </head>
 <body>
@@ -43,7 +53,8 @@
         <h1>Bonjour, auriez-vous une question ? Vous souhaitez recevoir une brochure ?</h1>
         <?php 
             if (isset($_GET['success'])) {
-                echo '<p class="success">Nous avons bien reçus les informations !</p>';
+                echo '<p class="success">Nous avons bien reçus vos informations !</p>
+                <p class="success"><b>Un email vous a été envoyé.</b></p>';
             }
         ?>
     </header>

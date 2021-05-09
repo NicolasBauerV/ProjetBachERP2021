@@ -22,7 +22,7 @@
 </head>
 <body>
     <header>
-        <h2 style="margin-left: .4em">Bienvenue <?php echo $_SESSION['username'];?></h2>
+        <h2 style="margin-left: .4em"><?php echo $_SESSION['username'];?></h2>
         <ul>
             <li><a href="account_settings.php">Mon compte</a></li>
         </ul>
@@ -84,20 +84,19 @@
         </div>
     </div>
     <script type="text/javascript">
-        //Récupère la variable $i php
-        let nbMsg = "<?php Print($i) ?>";
+
+        let nbMsg = "<?php Print($i) ?>"; //Récupère la variable $i php
         let tabId = new Array();
 
         let isBtnActive = false;
         let counter = 0;
-        let counterEffect = 0;
 
         //Tableau contenant les différents boutons
         let arrBtn = new Array();
+
+        //Récolte des boutons du tableau
         for (let j = 0; j < nbMsg; j++) {
             arrBtn.push(document.getElementById(`btn_msg${j}`));
-
-            //Récupère Ids
             tabId.push(j + 1);
         }
 
@@ -105,9 +104,11 @@
             let nbBtn = tabId.length;
             arrBtn[i].onclick = function() {
                 isBtnActive = true;
+
                 for (let j = 0; j < tabId.length; j++) {
                     arrBtn[j].style.backgroundColor = "#a6a6a6"; //Affecte tout les boutons
                     arrBtn[j].disabled = true; // affecte tout les boutons
+
                     if(isBtnActive) {
                         arrBtn[i].disabled = false; // Bouton courant
                     }
@@ -122,31 +123,36 @@
                     document.querySelector('#child').style.display = "block";
                 } else { // Fermeture
                     isBtnActive = false;
+
                     for (let j = 0; j < tabId.length; j++) {
                         arrBtn[j].style.backgroundColor = "#5f14ff";
                         arrBtn[j].disabled = false;
                     }
+                    
+                    //Effacement de la seconde fenêtre et remise en place de la 1ere fenêtre et les couleurs des boutons
                     document.getElementById(`btn_msg${i}`).style.backgroundColor = '#5f14ff';
                     document.getElementById(`p${i}`).style.display = "none";
                     document.querySelector('#container').style.justifyContent = "center";
                     document.querySelector('#child').style.display = "none";
                 }
+
                 if (counter === 2 ) {
                     counter = 0;
                 }
             }
+
             arrBtn[i].onmouseenter = function () {
                 if (!isBtnActive) {
                     arrBtn[i].style.backgroundColor = "#007bff";
                 }
             }
+
             arrBtn[i].onmouseout = function () {
                 if (!isBtnActive) {
                     arrBtn[i].style.backgroundColor = "#5f14ff";
                 }
             }
         }
-        
     </script>
 </body>
 </html>

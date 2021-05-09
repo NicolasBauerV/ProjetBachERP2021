@@ -3,6 +3,7 @@ src/scripts/node_modules
 /vendor/
 *.pdf
 *.code-workspace
+/pages/PHPMailer
 
 #files
 composer.phar
