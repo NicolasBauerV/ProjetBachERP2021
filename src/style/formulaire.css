@@ -7,7 +7,7 @@ a {
 
 body {
     font-size: 16px;
-    font-family: 'Padauk', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #EBEBEB;
     margin: 0;
     padding: 0;
@@ -104,7 +104,7 @@ input[type=checkbox] {
     margin: 0 auto;
     margin-top: 15vh;
     text-align: center;
-    width: 35%;
+    width: max-content;
     padding: 10px;
 }
 

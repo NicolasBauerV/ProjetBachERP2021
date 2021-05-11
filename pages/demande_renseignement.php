@@ -74,13 +74,17 @@
         </div>
         <div id="child">
             <h2 style="text-align: center;">Message</h2>
-            <?php
-                $j = 0;
-                while ($j < $i) {
-                    echo "<p id=\"p".$j."\">".$msg_array[$j]."</p>";
-                    $j+=1;
-                }
-            ?>
+            <form method="POST" action="reponse.php">
+                <?php
+                    $j = 0;
+                    while ($j < $i) {
+                        echo "<p id=\"p".$j."\">".$msg_array[$j]."</p>";
+                        $j+=1;
+                    }
+                ?>
+                <button id="answer" type="submit" onclick="location.href = './reponse.php'">Répondre</button>
+            </form>
+
         </div>
     </div>
     <script type="text/javascript">
@@ -114,6 +118,7 @@
                     }
                 }
                 counter++;
+                
                 // On ouvre la zone d'affichage des messages
                 if (tabId[i] === i + 1 && counter % 2 === 1) {
                     document.getElementById(`btn_msg${i}`).style.backgroundColor = '#ff3300'; // Bouton devient rouge

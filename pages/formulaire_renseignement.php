@@ -1,7 +1,7 @@
 <?php
 ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
-    require './email.php';
+    require './emails/email.php';
     // traitement des informations
     if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['cycle']) && !empty($_POST['email']) && !empty($_POST['tel']) && !empty($_POST['message'])) {
         $nom = $_POST['nom'];

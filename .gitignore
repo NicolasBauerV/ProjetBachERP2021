@@ -4,6 +4,7 @@ src/scripts/node_modules
 *.pdf
 *.code-workspace
 /pages/PHPMailer
+/pages/connexion_déconnexion/bdd_connexion.php
 
 #files
 composer.phar

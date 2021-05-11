@@ -1,9 +1,11 @@
 <?php
 ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
-    require './email.php';
+    require './emails/email.php';
     $emailVerif = $_COOKIE['email'];
     var_dump($emailVerif);
+    var_dump($_COOKIE['nom']);
+    var_dump($_COOKIE['prenom']);
     if (!empty($_POST["emailConf"])) {
         $email = $_POST["emailConf"];
         $valid = null;
