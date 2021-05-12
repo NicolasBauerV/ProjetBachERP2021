@@ -47,15 +47,6 @@ header ul li a {
     border: 1px solid grey;
 }
 
-#emailI {
-    padding: .6em;
-}
-
-#sub {
-    margin-left: 15px;
-    padding: .45em;
-}
-
 button {
     font-size: 16px;
     padding: .7em;
@@ -67,7 +58,7 @@ button {
 }
 
 button#btn_form {
-    background-color: #ff3300;
+    background-color: #d80000;
     color: #FFF;
 }
 

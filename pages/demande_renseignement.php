@@ -26,6 +26,7 @@
         <ul>
             <li><a href="account_settings.php">Mon compte</a></li>
         </ul>
+        <p id="result" style="display: none;"></p>
     </header>
 
     <div id="container">
@@ -53,14 +54,14 @@
                         while ($donnees = $request->fetch()) {
                             echo " 
                             <tr>
-                                <td>".$donnees['id']."</td>
+                                <td><span id=\"idUser".$i."\"/>".$donnees['id']."</span></td>
                                 <td>".$donnees['nom']."</td>
                                 <td>".$donnees['prenom']."</td>
                                 <td>".$donnees['email']."</td>
                                 <td>".$donnees['formations']."</td>
                                 <td>".$donnees['tel']."</td>
                                 <td>".$donnees['newletters']."</td>
-                                <td><button class=\"msgView\" id=\"btn_msg".$i."\" onclick=\"afficheMsg();\">Voir message</button></td>
+                                <td><button class=\"msgView\" id=\"btn_msg".$i."\">Voir message</button></td>
                             </tr>";
                             array_push($id_array, $donnees['id']);
                             array_push($msg_array, $donnees['msg']);
@@ -73,33 +74,45 @@
             <button id="retour" type="button" onclick="location.href = 'accueil.php'">Retour</button>
         </div>
         <div id="child">
-            <h2 style="text-align: center;">Message</h2>
-            <form method="POST" action="reponse.php">
-                <?php
-                    $j = 0;
-                    while ($j < $i) {
-                        echo "<p id=\"p".$j."\">".$msg_array[$j]."</p>";
-                        $j+=1;
-                    }
-                ?>
-                <button id="answer" type="submit" onclick="location.href = './reponse.php'">Répondre</button>
+            <header class="titre">
+                <h2 style="text-align: center;">Message</h2>
+            </header>
+            <?php
+                $j = 0;
+                while ($j < $i) {
+                    echo "<pre id=\"p".$j."\">".$msg_array[$j]."</pre>";
+                    $j+=1;
+                }
+            ?>
+            <form id="msgForm" method="GET" action="./reponse.php">
+                <!-- <input type="hidden" name="msgtosend"> -->
+                <input type="number" name="nbIdUser" id="nbIdUser" style="display: none;"/>
+                <button id="answer" type="submit">Répondre</button>
             </form>
 
         </div>
     </div>
     <script type="text/javascript">
 
-        let nbMsg = "<?php Print($i) ?>"; //Récupère la variable $i php
+        let hiddenInput = document.getElementsByTagName('msgtosend');
+        let nbDonnee = "<?php Print($i) ?>"; //Récupère la variable $i php
         let tabId = new Array();
+        let tabIdUser = new Array();
 
         let isBtnActive = false;
         let counter = 0;
 
         //Tableau contenant les différents boutons
         let arrBtn = new Array();
+        
+
+        //Collect userId from BDD
+        for (let j = 0; j < nbDonnee; j++) {
+            tabIdUser.push(document.getElementById(`idUser${j}`));
+        }
 
         //Récolte des boutons du tableau
-        for (let j = 0; j < nbMsg; j++) {
+        for (let j = 0; j < nbDonnee; j++) {
             arrBtn.push(document.getElementById(`btn_msg${j}`));
             tabId.push(j + 1);
         }
@@ -126,6 +139,8 @@
                     document.getElementById(`p${i}`).style.display = "block";
                     document.querySelector('#container').style.justifyContent = "space-around";
                     document.querySelector('#child').style.display = "block";
+                    document.getElementById('nbIdUser').value = tabIdUser[i].innerHTML;
+                    
                 } else { // Fermeture
                     isBtnActive = false;
 

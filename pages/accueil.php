@@ -28,11 +28,11 @@
     <div id="main">
         <button type="button" onclick="location.href = 'demande_renseignement.php'">Demandes de renseignement</button>
 
+        <button type="button" onclick="location.href = 'template.php'">Template Mail</button>
+
         <button disabled type="button" onclick="location.href = 'dossier_candidature.php'">Dossier candidature</button>
-        
-        <br>
-        <br>
-        <button type="button" onclick="location.href = 'connexion_déconnexion/deconnexion.php'">Se déconnecter</button>
+
+        <button type="button" id="btn_form" onclick="location.href = 'connexion_déconnexion/deconnexion.php'">Se déconnecter</button>
     </div>
 </body>
 </html>
