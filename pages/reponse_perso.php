@@ -11,39 +11,45 @@
 
     $request = $bdd->prepare('SELECT * from renseignements');
     $request->execute();
+
+//Compter si il existe des messages
+    $request = $bdd->prepare('SELECT COUNT(message) as nbMessage FROM message_perso');
+    $request->execute();
+    while ($donnee = $request->fetch()) {
+        if ($donnee['nbMessage'] != 0) {
+            $btnActivate = true;
+        }
+    }
+
+    $request = $bdd->prepare('SELECT * FROM message_perso');
+    $request->execute();
+
+
 ?>
 
 <!Doctype html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ludus-ERP : Demande Renseignement</title>
-    <link type="text/css" rel="stylesheet" href="../src/style/liste_renseignements.css?t=<? echo time(); ?>"/>
+    <title>Ludus-ERP : Template</title>
+    <link rel="stylesheet" href="../src/style/template.css">
 </head>
 <body>
     <header>
-        <h2 style="margin-left: .4em"><?php echo $_SESSION['username'];?></h2>
+        <h2 style="margin-left: .4em;"><?php echo '<span style="color: green;">'.$_SESSION['username'].'</span>';?></h2>
         <ul>
             <li><a href="account_settings.php">Mon compte</a></li>
         </ul>
-        <p id="result" style="display: none;"></p>
     </header>
-
     <div id="container">
         <div id="main">
-            <h2>Liste des demandes de renseignement</h2>
             <div id="tableDiv">
                 <table border class="table">
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Email</th>
-                            <th>Formations</th>
-                            <th>N°tel</th>
-                            <th>Newsletters</th>
                             <th>Message</th>
+                            <th>Date de crétaion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,25 +61,19 @@
                             echo " 
                             <tr>
                                 <td><span id=\"idUser".$i."\"/>".$donnees['id']."</span></td>
-                                <td>".$donnees['nom']."</td>
-                                <td>".$donnees['prenom']."</td>
-                                <td>".$donnees['email']."</td>
-                                <td>".$donnees['formations']."</td>
-                                <td>".$donnees['tel']."</td>
-                                <td>".$donnees['newletters']."</td>
-                                <td><button class=\"msgView\" id=\"btn_msg".$i."\">Voir message</button></td>
+                                <td><button id=\"btn_msg".$i."\">Voir message</button></td>
+                                <td>".$donnees['date_creation']."</td>
                             </tr>";
                             array_push($id_array, $donnees['id']);
-                            array_push($msg_array, $donnees['msg']);
+                            array_push($msg_array, $donnees['message']);
                             $i += 1;
                         }
                         ?>
                     </tbody>
                 </table>
             </div>
-            <button id="retour" type="button" onclick="location.href = 'accueil.php'">Retour</button>
         </div>
-        <div id="child">
+        <div id="child2">
             <header class="titre">
                 <h2 style="text-align: center;">Message</h2>
             </header>
@@ -86,8 +86,8 @@
             ?>
             <form id="msgForm" method="GET" action="./reponse.php">
                 <!-- <input type="hidden" name="msgtosend"> -->
-                <input type="number" name="nbIdUser" id="nbIdUser" style="display: none;"/>
-                <button id="answer" type="submit">Répondre</button>
+                <input type="number" name="nbIdMsg" id="nbIdMsg" style="display: none;"/>
+                <button id="answer" type="submit">Ajouter ce message</button>
             </form>
 
         </div>
@@ -137,8 +137,8 @@
                     // Fait apparaître la zone de message
                     document.getElementById(`p${i}`).style.display = "block";
                     document.querySelector('#container').style.justifyContent = "space-around";
-                    document.querySelector('#child').style.display = "block";
-                    document.getElementById('nbIdUser').value = tabIdUser[i].innerHTML;
+                    document.querySelector('#child2').style.display = "block";
+                    document.getElementById('nbIdMsg').value = tabIdUser[i].innerHTML;
                     
                 } else { // Fermeture
                     isBtnActive = false;
@@ -152,7 +152,7 @@
                     document.getElementById(`btn_msg${i}`).style.backgroundColor = '#5f14ff';
                     document.getElementById(`p${i}`).style.display = "none";
                     document.querySelector('#container').style.justifyContent = "center";
-                    document.querySelector('#child').style.display = "none";
+                    document.querySelector('#child2').style.display = "none";
                 }
 
                 if (counter === 2 ) {

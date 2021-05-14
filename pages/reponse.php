@@ -58,7 +58,7 @@
     <link type="text/css" rel="stylesheet" href="../src/style/liste_renseignements.css?t=<? echo time(); ?>"/>
     <link rel="stylesheet" href="../src/style/reponse.css">
 </head>
-<body onload="Refresh();">
+<body>
     <header>
         <h2 style="margin-left: .4em"><?php echo $_SESSION['username'];?></h2>
         <ul>
@@ -86,9 +86,15 @@
                 <textarea name="area_answer" id="area_answer" cols="50" rows="10" placeholder="*Insérer votre message..." required></textarea>
                 <button id="send" type="submit">Envoyer</button>
             </form>
+            <button id="otherans" type="submit" onclick="location.href='./reponse_perso.php'">Répondre avec un message personnaliser</button>
             
             <button id="retour" type="button" onclick="location.href = './demande_renseignement.php'">Retour</button>
         </div>
     </div>
+
+    <script text="text/javascript">
+        const idMsg = '<?php $_GET['nbIdMsg'] ?>';
+        document.getElementById('area_answer').value = idMsg;
+    </script>
 </body>
 </html>

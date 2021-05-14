@@ -64,9 +64,10 @@
                 <button type="submit">Enregistrer</button>
             </form>
             <button id="disabled">Voir messages</button>
+            <button id="retour" type="button" onclick="location.href = 'accueil.php'">Retour</button>
         </div>
 
-        <div id="child">
+        <div id="child1">
             <div id="tableDiv">
                 <table border class="table">
                     <thead>
@@ -101,36 +102,123 @@
                 </table>
             </div>
         </div>
-    </div>
 
+        <div id="child2">
+            <header class="titre">
+                <h2 style="text-align: center;">Message</h2>
+            </header>
+            <?php
+                $j = 0;
+                while ($j < $i) {
+                    echo "<pre id=\"p".$j."\">".$msg_array[$j]."</pre>";
+                    $j+=1;
+                }
+            ?>
+        </div>
+    </div>
     <script type="text/javascript">
-        let btn = document.querySelector('#disabled');
+        //Premiere fenetre à ouvrir
+        const btn = document.querySelector('#disabled');
         btn.disabled = true;
         let isBtnActivate = '<?php Print($btnActivate) ?>';
+        let counterArea1 = 1;
+
+        //Seconde fenetre une fois l'autre ouverte
+        let counterArea2 = 1;
+        let nbDonnee = "<?php Print($i) ?>";
+        let tabIdBtn = new Array();
+        let tabButtons = new Array();
+        
+        // Si le bouton est activé alors on affiche la première fenêtre
         if (isBtnActivate) {
             btn.disabled = false;
+
+            //Style pour le bouton
             btn.style.backgroundColor = "#5f14ff";
+            btn.onmouseenter = function() {
+                btn.style.boxShadow = "4px 3px 1px #014ca9";
+                btn.style.backgroundColor = "#007bff";
+                btn.style.color = "white";
+            }
+            //Style pour le bouton
+            btn.onmouseout = function() {
+                btn.style.boxShadow = "none";
+                btn.style.backgroundColor = "#5f14ff";
+                btn.style.color = "white";
+            }
+
+            //Affichage première fenêtre au click
+            btn.addEventListener("click", () => {
+                if (counterArea1 % 2 === 1) {
+                    if (document.querySelector('#child1').style.display != "block") {
+                        document.querySelector('#child1').style.display = "block";
+                        //Récolte des boutons
+                        for (let i = 0; i < nbDonnee; i++) {
+                            tabButtons.push(document.querySelector(`#btn_msg${i}`));
+                            tabIdBtn.push(i + 1);
+                        }
+                        //Evenement lors d'appuis sur un bouton d'une ligne
+                        for (let i = 0; i < tabIdBtn.length; i++) {
+                            tabButtons[i].addEventListener("click", function() {
+                                isBtnActive = true;
+                                //Analyse des boutons à desactiver lors de l'appuis sur un des boutons
+                                for (let j = 0; j < tabIdBtn.length; j++) {
+                                    tabButtons[j].style.backgroundColor = "#a6a6a6"; //Affecte tout les boutons
+                                    tabButtons[j].disabled = true; // affecte tout les boutons
+                                    if(isBtnActive) {
+                                        tabButtons[i].disabled = false; // Bouton courant toujours activé
+                                    }
+                                }
+                                // On ouvre la zone d'affichage des messages
+                                if (tabIdBtn[i] === i + 1 && counterArea2 % 2 === 1) {
+                                    document.querySelector(`#btn_msg${i}`).style.backgroundColor = '#ff3300'; // Bouton devient rouge
+                                    // Fait apparaître la zone de message
+                                    document.querySelector(`#p${i}`).style.display = "block";
+                                    document.querySelector('#container').style.justifyContent = "space-around";
+                                    document.querySelector('#child2').style.display = "block";
+                                } else { // Fermeture
+                                    isBtnActive = false;
+                                    for (let j = 0; j < tabIdBtn.length; j++) {
+                                        tabButtons[j].style.backgroundColor = "#5f14ff";
+                                        tabButtons[j].disabled = false;
+                                    }
+                                    //Effacement de la seconde fenêtre et remise en place de la 1ere fenêtre et les couleurs des boutons
+                                    document.querySelector(`#btn_msg${i}`).style.backgroundColor = '#5f14ff';
+                                    document.querySelector(`#p${i}`).style.display = "none";
+                                    document.querySelector('#child2').style.display = "none";
+                                }
+                                counterArea2++;
+                            });
+                        }
+                    }
+                } else { // Suppression de la première et seconde fenêtre
+                    document.querySelector('#child1').style.display = "none";
+                    document.querySelector('#container').style.justifyContent = "space-around";
+                    document.querySelector('#child2').style.display = "none";
+
+                }
+                counterArea1++;
+            });
         } else {
             alert('Vous n\'avez pas de message pour le moment');
         }
 
-        btn.addEventListener("click", () => {
-            
-        });
+        if (counterArea1 === 2) {
+            counterArea1 = 1;
+        }
 
+        //Style pour le bouton
         btn.onmousedown = function() {
             btn.style.boxShadow = "0 0 6px 2px #000d7a inset";
             btn.style.backgroundColor = "#007bff";
+            btn.style.color = "#cccccc";
         }
 
-        btn.onmouseenter = function() {
-            btn.style.boxShadow = "4px 3px 1px #014ca9";
-            btn.style.backgroundColor = "#007bff";
-        }
-
-        btn.onmouseout = function() {
+        //Style pour le bouton
+        btn.onmouseup = function() {
             btn.style.boxShadow = "none";
             btn.style.backgroundColor = "#5f14ff";
+            btn.style.color = "white";
         }
     </script>
 </body>
