@@ -25,6 +25,15 @@ header ul li a {
     color: black;
 }
 
+label {
+    display: block;
+    margin-top: 1em;
+}
+
+label input {
+    display: block;
+} 
+
 div#container {
     display: flex;
     justify-content: space-around;
@@ -35,7 +44,7 @@ div#container {
 pre {
     display: none;
     overflow: scroll;
-    height: 75%;
+    height: max-content;
     width: 100%;
 }
 
@@ -44,18 +53,7 @@ pre {
     border-collapse: collapse;
 }
 
-#main {
-    width: max-content;
-    height: max-content;
-    padding: 1em;
-    background-color: #FFFFFF;
-    box-shadow: 4px 4px 3px rgb(69, 69, 69);
-    text-align: center;
-    border-radius: 15px;
-}
-
 #child1 {
-    display: none;
     width: auto;
     height: max-content;
     /*margin: 2em auto;*/
@@ -65,25 +63,10 @@ pre {
     border-radius: 15px;
 }
 
-#child2 {
-    display: none;
-    width: 40vh;
-    height: 40vh;
-    /*margin: 2em auto;*/
-    padding: 1em;
-    background-color: #FFFFFF;
-    box-shadow: 4px 4px 3px rgb(69, 69, 69);
-    border-radius: 15px;
-}
-
-#child2 .titre {
-    box-shadow: none;
-}
-
 #child3 {
     display: none;
     width: 40vh;
-    height: auto;
+    height: max-content;
     /*margin: 2em auto;*/
     padding: 1em;
     background-color: #FFFFFF;
@@ -93,12 +76,6 @@ pre {
 
 #child3 .titre {
     box-shadow: none;
-}
-
-.par {
-    height: 30vh;
-    width: 100%;
-    overflow: scroll;
 }
 
 #tableDiv {

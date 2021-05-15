@@ -29,10 +29,23 @@
         }
     }
 
+    if (isset($_GET['idMsg'])) {
+        $msgIdToDel = $_GET['idMsg'];
+        $request = $bdd->prepare("DELETE FROM message_perso WHERE id = ?");
+        $request->execute(array($msgIdToDel));
+        header("location: ./template.php");
+    }
+
+    if (!empty($_POST['newMsg'])) {
+        $id = $_POST['nbMsgId'];
+        $newMsg = $_POST['newMsg'];
+        $request = $bdd->prepare("UPDATE message_perso SET message = ? WHERE id = ?");
+        $request->execute(array($newMsg, $id));
+        header('location: ./template.php?mod=1');
+    }
+
     $request = $bdd->prepare('SELECT * FROM message_perso');
     $request->execute();
-
-
 ?>
 
 <!Doctype html>
@@ -53,7 +66,10 @@
         <div id="main">
             <?php
                 if (!isset($_GET['success'])) {
-                    echo '<h2>Ici vous pouvez créer vos template email, pour les réutiliser lors des réponses</h2>';
+                    echo '<h2>Créer votre template :</h2>';
+                    if (isset($_GET['mod'])) {
+                        echo '<h3 class="success">Modification apportés !</h3>';
+                    }
                 } else {
                     echo '<h3 class="success">Enregistrement réussi !</h3>';
                 }
@@ -68,15 +84,16 @@
         </div>
 
         <div id="child1">
+            <h2 style="text-align:center;">Liste des messages</h2>
             <div id="tableDiv">
                 <table border class="table">
                     <thead>
                         <tr>
                             <th>Id</th>
                             <th>Message</th>
-                            <th>Date de crétaion</th>
-                            <th>Bouton</th>
-                            <th>Bouton</th>
+                            <th>Date de création</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,11 +104,16 @@
                         while ($donnees = $request->fetch()) {
                             echo " 
                             <tr>
-                                <td><span id=\"idUser".$i."\"/>".$donnees['id']."</span></td>
+                                <td><span id=\"msgId".$i."\"/>".$donnees['id']."</span></td>
                                 <td><button id=\"btn_msg".$i."\">Voir message</button></td>
                                 <td>".$donnees['date_creation']."</td>
                                 <td><button class=\"modifier\" id=\"btn_modif".$i."\">Modifier</button></td>
-                                <td><button class=\"supr\" id=\"btn_supr".$i."\">Supprimer</button></td>
+                                <td>
+                                    <form action=\"./template.php\" method=\"GET\">
+                                        <input type=\"number\" name=\"idMsg\" style=\"display: none;\" value=\"".intval($donnees['id'])."\"/>
+                                        <button type=\"submit\" class=\"supr\">Supprimer</button>
+                                    </form>
+                                </td>
                             </tr>";
                             array_push($id_array, $donnees['id']);
                             array_push($msg_array, $donnees['message']);
@@ -102,10 +124,9 @@
                 </table>
             </div>
         </div>
-
         <div id="child2">
             <header class="titre">
-                <h2 style="text-align: center;">Message</h2>
+                <h2>Message</h2>
             </header>
             <?php
                 $j = 0;
@@ -115,10 +136,31 @@
                 }
             ?>
         </div>
+        <div id="child3">
+            <header class="titre">
+                <h2>Modifer le message</h2>
+            </header>
+            <form method="POST" action="./template.php">
+                <h3>Ancien message :</h3>
+                <?php
+                    $j = 0;
+                    while ($j < $i) {
+                        echo "<pre class=\"par\" id=\"p2".$j."\">".$msg_array[$j]."</pre>";
+                        $j+=1;
+                    }
+                ?>
+                <h3>Nouveau message :</h3>
+                <textarea name="newMsg" id="newMsg" cols="30" rows="10" placeholder="Entrez nouveau message"></textarea>
+                <input type="number" name="nbMsgId" id="nbMsgId" style="display: none;"/>
+                <br>
+                <button type="submit" class="modifier">Modifier et envoyer</button>
+            </form>
+        </div>
     </div>
     <script type="text/javascript">
         //Premiere fenetre à ouvrir
         const btn = document.querySelector('#disabled');
+        const btnDel = document.querySelector(".supr");
         btn.disabled = true;
         let isBtnActivate = '<?php Print($btnActivate) ?>';
         let counterArea1 = 1;
@@ -126,8 +168,16 @@
         //Seconde fenetre une fois l'autre ouverte
         let counterArea2 = 1;
         let nbDonnee = "<?php Print($i) ?>";
-        let tabIdBtn = new Array();
-        let tabButtons = new Array();
+
+        // Bouton "voir message"
+        const tabIdBtn = new Array();
+        const tabButtons = new Array();
+
+        //Bouton "modifier"
+        let counterArea3 = 1;
+        const tabIdMsg = new Array();
+        const tabIdBtnMod = new Array();
+        const tabButtonsMod = new Array();
         
         // Si le bouton est activé alors on affiche la première fenêtre
         if (isBtnActivate) {
@@ -152,44 +202,6 @@
                 if (counterArea1 % 2 === 1) {
                     if (document.querySelector('#child1').style.display != "block") {
                         document.querySelector('#child1').style.display = "block";
-                        //Récolte des boutons
-                        for (let i = 0; i < nbDonnee; i++) {
-                            tabButtons.push(document.querySelector(`#btn_msg${i}`));
-                            tabIdBtn.push(i + 1);
-                        }
-                        //Evenement lors d'appuis sur un bouton d'une ligne
-                        for (let i = 0; i < tabIdBtn.length; i++) {
-                            tabButtons[i].addEventListener("click", function() {
-                                isBtnActive = true;
-                                //Analyse des boutons à desactiver lors de l'appuis sur un des boutons
-                                for (let j = 0; j < tabIdBtn.length; j++) {
-                                    tabButtons[j].style.backgroundColor = "#a6a6a6"; //Affecte tout les boutons
-                                    tabButtons[j].disabled = true; // affecte tout les boutons
-                                    if(isBtnActive) {
-                                        tabButtons[i].disabled = false; // Bouton courant toujours activé
-                                    }
-                                }
-                                // On ouvre la zone d'affichage des messages
-                                if (tabIdBtn[i] === i + 1 && counterArea2 % 2 === 1) {
-                                    document.querySelector(`#btn_msg${i}`).style.backgroundColor = '#ff3300'; // Bouton devient rouge
-                                    // Fait apparaître la zone de message
-                                    document.querySelector(`#p${i}`).style.display = "block";
-                                    document.querySelector('#container').style.justifyContent = "space-around";
-                                    document.querySelector('#child2').style.display = "block";
-                                } else { // Fermeture
-                                    isBtnActive = false;
-                                    for (let j = 0; j < tabIdBtn.length; j++) {
-                                        tabButtons[j].style.backgroundColor = "#5f14ff";
-                                        tabButtons[j].disabled = false;
-                                    }
-                                    //Effacement de la seconde fenêtre et remise en place de la 1ere fenêtre et les couleurs des boutons
-                                    document.querySelector(`#btn_msg${i}`).style.backgroundColor = '#5f14ff';
-                                    document.querySelector(`#p${i}`).style.display = "none";
-                                    document.querySelector('#child2').style.display = "none";
-                                }
-                                counterArea2++;
-                            });
-                        }
                     }
                 } else { // Suppression de la première et seconde fenêtre
                     document.querySelector('#child1').style.display = "none";
@@ -219,6 +231,97 @@
             btn.style.boxShadow = "none";
             btn.style.backgroundColor = "#5f14ff";
             btn.style.color = "white";
+        }
+        
+        //TRAITEMENT Fenêtre liste des boutons
+        messageListe();
+
+        function messageListe() {
+            //Récolte des boutons
+            for (let i = 0; i < nbDonnee; i++) {
+                tabButtons.push(document.querySelector(`#btn_msg${i}`));
+                tabIdBtn.push(i + 1);
+            }
+            //Evenement lors d'appuis sur un bouton d'une ligne
+            for (let i = 0; i < tabIdBtn.length; i++) {
+                tabButtons[i].addEventListener("click", function() {
+                    isBtnActive = true;
+                    //Analyse des boutons à desactiver lors de l'appuis sur un des boutons
+                    for (let j = 0; j < tabIdBtn.length; j++) {
+                        tabButtons[j].style.backgroundColor = "#a6a6a6"; //Affecte tout les boutons
+                        tabButtons[j].disabled = true; // affecte tout les boutons
+                        if(isBtnActive) {
+                            tabButtons[i].disabled = false; // Bouton courant toujours activé
+                        }
+                    }
+                    // On ouvre la zone d'affichage des messages
+                    if (tabIdBtn[i] === i + 1 && counterArea2 % 2 === 1) {
+                        document.querySelector(`#btn_msg${i}`).style.backgroundColor = '#ff3300'; // Bouton devient rouge
+                        // Fait apparaître la zone de message
+                        document.querySelector(`#p${i}`).style.display = "block";
+                        document.querySelector('#container').style.justifyContent = "space-around";
+                        document.querySelector('#child2').style.display = "block";
+                    } else { // Fermeture
+                        isBtnActive = false;
+                        for (let j = 0; j < tabIdBtn.length; j++) {
+                            tabButtons[j].style.backgroundColor = "#5f14ff";
+                            tabButtons[j].disabled = false;
+                        }
+                        //Effacement de la seconde fenêtre et remise en place de la 1ere fenêtre et les couleurs des boutons
+                        document.querySelector(`#btn_msg${i}`).style.backgroundColor = '#5f14ff';
+                        document.querySelector(`#p${i}`).style.display = "none";
+                        document.querySelector('#child2').style.display = "none";
+                    }
+                    counterArea2++;
+                });
+            }
+        }
+
+        //TRAITEMENT fenêtre modification
+        modifierMsgListe();
+
+        function modifierMsgListe() {
+            
+            //Récolte des boutons
+            for (let i = 0; i < nbDonnee; i++) {
+                tabIdMsg.push(document.querySelector(`#msgId${i}`)); //Ajout de l'id des messages
+                tabButtonsMod.push(document.querySelector(`#btn_modif${i}`));
+                tabIdBtnMod.push(i + 1);
+            }
+            //Evenement lors d'appuis sur un bouton d'une ligne
+            for (let i = 0; i < tabIdBtnMod.length; i++) {
+                tabButtonsMod[i].addEventListener("click", function() {
+                    isBtnActive = true;
+                    //Analyse des boutons à desactiver lors de l'appuis sur un des boutons
+                    for (let j = 0; j < tabIdBtnMod.length; j++) {
+                        tabButtonsMod[j].style.backgroundColor = "#a6a6a6"; //Affecte tout les boutons
+                        tabButtonsMod[j].disabled = true; // affecte tout les boutons
+                        if(isBtnActive) {
+                            tabButtonsMod[i].disabled = false; // Bouton courant toujours activé
+                        }
+                    }
+                    // On ouvre la zone d'affichage des messages
+                    if (tabIdBtnMod[i] === i + 1 && counterArea3 % 2 === 1) {
+                        document.querySelector(`#btn_modif${i}`).style.backgroundColor = '#ff3300'; // Bouton devient rouge
+                        // Fait apparaître la zone de message
+                        document.querySelector(`#p2${i}`).style.display = "block";
+                        document.querySelector('#container').style.justifyContent = "space-around";
+                        document.querySelector('#child3').style.display = "block";
+                        document.getElementById("nbMsgId").value = tabIdMsg[i].innerHTML;
+                    } else { // Fermeture
+                        isBtnActive = false;
+                        for (let j = 0; j < tabIdBtnMod.length; j++) {
+                            tabButtonsMod[j].style.backgroundColor = "#ecae01";
+                            tabButtonsMod[j].disabled = false;
+                        }
+                        //Effacement de la seconde fenêtre et remise en place de la 1ere fenêtre et les couleurs des boutons
+                        document.querySelector(`#btn_modif${i}`).style.backgroundColor = '#ecae01';
+                        document.querySelector(`#p2${i}`).style.display = "none";
+                        document.querySelector('#child3').style.display = "none";
+                    }
+                    counterArea3++;
+                });
+            }
         }
     </script>
 </body>

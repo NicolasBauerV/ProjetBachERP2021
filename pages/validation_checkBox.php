@@ -59,19 +59,20 @@ ob_start(); // retenir l’envoi de données
     <form id="form-sure" method="post" action="validation_checkBox.php">
         <?php 
             if (!isset($_GET['success'])) {
-                echo '<h2>Êtes-vous sûr.e de ne pas vouloir recevoir les newsletters ?</h2>';
+                echo '<h2>Êtes-vous sûr.e de ne pas vouloir recevoir les newsletters ?</h2>
+                      <p>Ces newsletters vous donnerait des informations sur <span style="color: red">les portes ouvertes et les réunions d\'informations</span></p>';
             }
         ?>
         <h3>
             <?php 
                 if (isset($_GET['success'])) {
-                    echo '<p class="success">Nous avons bien reçu vos informations, un email vous a été envoyer</p>';
+                    echo '<p class="success">Nous avons bien reçu vos informations.</p> <p class="success">Un email vous a été envoyé pour télécharger une brochure</p>';
                 }
             ?>
         </h3>
         <label for="emailConf">
             <span>Confirmer l'email pour envoyer la demande :</span>
-            <input type="email" name="emailConf" id="emailConf" placeholder="Confirmer votre email :" required>
+            <input type="email" name="emailConf" id="emailConf" placeholder="Confirmer votre email :" required value="<?php echo $emailVerif?>">
         </label>
         <br>
         <label for="newsletter-sure">

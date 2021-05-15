@@ -1,7 +1,6 @@
 <?php
 ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
-    require './emails/email.php';
     // traitement des informations
     if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['cycle']) && !empty($_POST['email']) && !empty($_POST['tel']) && !empty($_POST['message'])) {
         $nom = $_POST['nom'];
@@ -25,8 +24,9 @@ ob_start(); // retenir l’envoi de données
             $newsletter = '1';
             $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
+            include_once './emails/email.php';
             sendMail($email, $nom, $prenom); // envoie d'email
-            header('Location:./formulaire_renseignement.php?success=1');
+            header('location:./formulaire_renseignement.php?success=1');
             exit();
         }
 
@@ -34,7 +34,7 @@ ob_start(); // retenir l’envoi de données
             $newsletter = '0';
             $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
-            header('Location: ./validation_checkBox.php');
+            header('location: ./validation_checkBox.php');
             exit();
         }
     }
@@ -54,7 +54,8 @@ ob_start(); // retenir l’envoi de données
         <?php 
             if (isset($_GET['success'])) {
                 echo '<p class="success">Nous avons bien reçus vos informations !</p>
-                <p class="success"><b>Un email vous a été envoyé.</b></p>';
+                <p class="success"><b>Un email vous a été envoyé.</b></p>
+                <p class="error"><b>Vérifier vos spams si vous pensez ne pas l\'avoir pas reçus.</b></p>';
             }
         ?>
     </header>

@@ -94,7 +94,11 @@ input[type=checkbox] {
     display: block;
     margin: 0 auto;
     max-height: fit-content;
-    padding: 15px;
+    padding: 10px;
+}
+
+#btn-sure {
+    padding: 10px;
 }
 
 #form-sure {

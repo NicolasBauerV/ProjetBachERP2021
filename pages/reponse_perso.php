@@ -16,8 +16,9 @@
     $request = $bdd->prepare('SELECT COUNT(message) as nbMessage FROM message_perso');
     $request->execute();
     while ($donnee = $request->fetch()) {
-        if ($donnee['nbMessage'] != 0) {
-            $btnActivate = true;
+        if ($donnee['nbMessage'] == 0) {
+            header("location: ./reponse.php?err1&nbMsg=0");
+            exit();
         }
     }
 
@@ -32,7 +33,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ludus-ERP : Template</title>
-    <link rel="stylesheet" href="../src/style/template.css">
+    <link rel="stylesheet" href="../src/style/reponse_perso.css">
 </head>
 <body>
     <header>
@@ -43,6 +44,7 @@
     </header>
     <div id="container">
         <div id="main">
+            <h2>Liste des messages</h2>
             <div id="tableDiv">
                 <table border class="table">
                     <thead>
@@ -72,6 +74,7 @@
                     </tbody>
                 </table>
             </div>
+            <button id="retour" type="button" onclick="location.href = './reponse.php'">Retour</button>
         </div>
         <div id="child2">
             <header class="titre">

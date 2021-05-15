@@ -13,12 +13,17 @@
 
     if (isset($_GET['nbIdUser'])) {
         setcookie("idUser", $_GET['nbIdUser'], time() + 24 * 60 * 60, null, null, false, true);
+        header('location: ../pages/reponse.php');
     }
     $idUser = $_COOKIE['idUser'];
+
     $nom = null;
     $prenom = null;
+    $date = null;
+    $time = null;
     $msg = null;
     $email = null;
+    $msgAns = null;
     
     $request = $bdd->prepare('SELECT nom FROM renseignements WHERE id = ?');
     $request->execute(array($idUser));
@@ -40,12 +45,38 @@
 
     $email = $request->fetchColumn(0);
 
+    if (!empty($_POST['subject'])) {
+        if ($_POST['subject'] == "rdv" && !empty($_POST['dateRdv']) && !empty($_POST['heureRdv'] && !empty($_POST['area_answer']))) {
+            $subject = "Rendez-vous";
+            $answer  = $_POST['area_answer'];
+            $date = $_POST['dateRdv'];
+            $time = $_POST['heureRdv'];
+
+            sendMailRdv($email, $nom, $prenom, $subject, $answer, $date, $time);
+
+            $request = $bdd->prepare("INSERT INTO prise_rdv(nom, prenom, date, temps) VALUES (?, ?, ?, ?)");
+            $request->execute(array($nom, $prenom, $date, $time));
+            header("location: ./reponse.php?success=1");
+            exit();
+        }
+    }
+
 
     if (!empty($_POST['subject']) && !empty($_POST['area_answer'])) {
-        $subject = $_POST['subject'];
-        $answer  = $_POST['area_answer'];
-        
-        sendMail($email, $nom, $prenom, $subject, $answer);
+        if ($_POST['subject'] == "reponse") {
+            $subject = "Demande de renseignement";
+            $answer  = $_POST['area_answer'];
+            sendMail($email, $nom, $prenom, $subject, $answer);
+            header("location: ./reponse.php?success=1");
+            exit();
+        }
+    }
+
+    if (isset($_GET['nbIdMsg'])) {
+        $idMsgAnsw = $_GET['nbIdMsg'];
+        $request = $bdd->prepare("SELECT message FROM message_perso WHERE id = ?");
+        $request->execute(array($idMsgAnsw));
+        $msgAns = $request->fetchColumn(0);
     }
 
 ?>
@@ -78,13 +109,32 @@
 
         <div id="main">
             <h2>Réponse au message de : <span style="color: #ca5b00;"> <?php echo $nom.' '.$prenom?></span></h2>
-            <form action="./reponse.php" method="post">
-                <label for="subject">
-                    <input type="text" name="subject" id="subject" placeholder="*Saisissez un sujet" required>
-                </label>
+            <?php 
+                if (isset($_GET['success'])) {
+                    echo '<span class="success">Email envoyé</span>';
+                } 
+            ?>
+            <form id="form" action="./reponse.php" method="post">
+                <select required name="subject" id="subject">
+                    <option value="">*Choisissez un sujet</option>
+                    <option value="reponse">Réponse</option>
+                    <option value="rdv">Rendez-vous</option>
+                </select>
                 <br>
-                <textarea name="area_answer" id="area_answer" cols="50" rows="10" placeholder="*Insérer votre message..." required></textarea>
-                <button id="send" type="submit">Envoyer</button>
+                <section id="reponseSection">
+                    <textarea name="area_answer" id="area_answer" cols="50" rows="10" placeholder="*Insérer votre message..." required><?php echo $msgAns ?></textarea>
+                </section>
+                <section id="rendezvous">
+                    <label for="dateRdv">
+                        <span>Date :</span>
+                        <input type="date" name="dateRdv" id="dateRdv">
+                    </label>
+                    <label for="heureRdv">
+                        <span>Heures : minutes</span>
+                        <input type="time" name="heureRdv" id="heureRdv">
+                    </label>
+                </section>
+                <button type="submit" id="send">Envoyer</button>
             </form>
             <button id="otherans" type="submit" onclick="location.href='./reponse_perso.php'">Répondre avec un message personnaliser</button>
             
@@ -92,9 +142,40 @@
         </div>
     </div>
 
-    <script text="text/javascript">
-        const idMsg = '<?php $_GET['nbIdMsg'] ?>';
-        document.getElementById('area_answer').value = idMsg;
+    <script type="text/javascript">
+        const btnSend = document.getElementById('send');
+        
+        //Réponse
+        const sectionAns = document.getElementById("reponseSection");
+        document.getElementById('subject').addEventListener('change', function() {
+            if (this.value == "") {
+                btnSend.style.display = "none";
+                sectionAns.style.display = "none";
+                sectionRdv.style.display = "none";
+            } else {
+                btnSend.style.display = "block";
+            }
+
+            if (this.value == "reponse") {
+                btnSend.style.display = "block";
+                sectionAns.style.display = "block";
+                sectionRdv.style.display = "none";
+            } else {
+                sectionAns.style.display = "none";
+            }
+        });
+
+        //Rendez vous
+        const sectionRdv = document.querySelector('#rendezvous');
+        document.getElementById('subject').addEventListener('change', function() {
+            if (this.value == "rdv") {
+                sectionAns.style.display = "block";
+                sectionRdv.style.display = "block";
+            } else {
+                sectionRdv.style.display = "none";
+            }
+        });
+        
     </script>
 </body>
 </html>
