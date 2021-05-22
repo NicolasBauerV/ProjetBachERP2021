@@ -17,7 +17,7 @@
     $request->execute();
     while ($donnee = $request->fetch()) {
         if ($donnee['nbMessage'] == 0) {
-            header("location: ./reponse.php?err1&nbMsg=0");
+            header("location: ./reponse.php?err=1&nbMsg=0");
             exit();
         }
     }

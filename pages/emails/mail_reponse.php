@@ -8,6 +8,7 @@
     require 'PHPMailer/src/SMTP.php';
 
     function sendMail($email, $nom, $prenom, $sujet, $message) {
+        $isSended = false;
         $fullName = $nom.' '.$prenom;
         $mail = new PHPMailer;
         $mail->isSMTP(); 
@@ -79,5 +80,7 @@
             echo "Mailer Error: " . $mail->ErrorInfo;
         }else{
             echo "Message sent!";
+            $isSended = true;
+            return $isSended;
         }
     }

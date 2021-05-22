@@ -9,6 +9,23 @@
         exit();
     }
 
+    //Redirection vers l'acceuil si il n'y a pas d'infos
+    $request = $bdd->prepare('SELECT COUNT(*) as nbRenseignements FROM renseignements');
+    $request->execute();
+    while ($donnee = $request->fetch()) {
+        if ($donnee['nbRenseignements'] == 0) {
+            header("location: ./accueil.php");
+            exit();
+        }
+    }
+
+    if (isset($_GET['idMsg'])) {
+        $msgIdToDel = $_GET['idMsg'];
+        $request = $bdd->prepare("DELETE FROM renseignements WHERE id = ?");
+        $request->execute(array($msgIdToDel));
+        header("location: ./demande_renseignement.php");
+    }
+
     $request = $bdd->prepare('SELECT * from renseignements');
     $request->execute();
 ?>
@@ -44,6 +61,7 @@
                             <th>N°tel</th>
                             <th>Newsletters</th>
                             <th>Message</th>
+                            <th>Supprimer</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,6 +80,12 @@
                                 <td>".$donnees['tel']."</td>
                                 <td>".$donnees['newletters']."</td>
                                 <td><button class=\"msgView\" id=\"btn_msg".$i."\">Voir message</button></td>
+                                <td>
+                                    <form action=\"./demande_renseignement.php\" method=\"GET\">
+                                        <input type=\"number\" name=\"idMsg\" style=\"display: none;\" value=\"".intval($donnees['id'])."\"/>
+                                        <button type=\"submit\" class=\"supr\">Supprimer</button>
+                                    </form>
+                                </td>
                             </tr>";
                             array_push($id_array, $donnees['id']);
                             array_push($msg_array, $donnees['msg']);

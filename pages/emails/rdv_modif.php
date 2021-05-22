@@ -7,9 +7,9 @@
     require 'PHPMailer/src/PHPMailer.php';
     require 'PHPMailer/src/SMTP.php';
 
-    function sendMail($email, $nom, $prenom) {
-        $isSended = false;
+    function sendMailRdv($email, $nom, $prenom, $motif, $date, $time) {
         $fullName = $nom.' '.$prenom;
+        $dateTime = 'Rendez-vous modifier : '.$date.' à : '.$time;
         $mail = new PHPMailer;
         $mail->isSMTP(); 
         //$mail->SMTPDebug = 2; // 0 = off (for production use) - 1 = client messages - 2 = client and server messages
@@ -34,13 +34,8 @@
 
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'Demande de renseignement';
-        $mail->Body    = '<div style="font-size: 1em; width: max-content; height: auto;">
-                              <h1>Merci de votre inscription <span style="color: #ff7070;">'.$fullName.'</span></h1>
-                              <p>
-                                En cliquant sur ce <a href="https://bachelor-proj.000webhostapp.com/pages/brochures.html">lien</a> vous pourrez télécharger la brochure.  
-                              </p>
-                          </div>';
+        $mail->Subject = 'Rendez-vous modifier';
+        $mail->Body    = "Votre rendez-vous a été modifié pour le motif suivant : ".$motif." . <br><b>Nouveau rendez-vous le : </b>"." <span style=\"color: red;\">".$dateTime."</span>";
         $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
         
         if(!$mail->send()){
@@ -51,3 +46,4 @@
             return $isSended;
         }
     }
+?>

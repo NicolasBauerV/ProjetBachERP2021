@@ -72,6 +72,10 @@ label input {
     height: max-content;
 }
 
+#rappelMsg {
+    overflow-x: scroll;
+}
+
 div#container {
     margin-top: 5vh;
     display: flex;
@@ -92,6 +96,16 @@ div#container {
     width: max-content;
     height: auto;
     background-color: green;
+    border-radius: 20px;
+    color: white;
+}
+
+.error {
+    margin: 0 auto;
+    padding: .5em;
+    width: max-content;
+    height: auto;
+    background-color: red;
     border-radius: 20px;
     color: white;
 }

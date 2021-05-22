@@ -139,3 +139,23 @@ button:active {
 #retour {
     margin-top: 1em;
 }
+
+td button.supr {
+    background-color: #d80000;
+    color: #FFF;
+}
+
+td button.supr:hover {
+    box-shadow: 4px 3px 1px #bf4f00;
+}
+
+td button.supr:not(:hover) {
+    transition: 0.25s;
+    background-color: #ff3300;
+    color: white;
+}
+
+td button.supr:active {
+    box-shadow: 0 0 3px 2px #700000 inset;
+    background-color: #ae2100;
+}

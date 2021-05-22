@@ -52,12 +52,13 @@
             $date = $_POST['dateRdv'];
             $time = $_POST['heureRdv'];
 
-            sendMailRdv($email, $nom, $prenom, $subject, $answer, $date, $time);
-
-            $request = $bdd->prepare("INSERT INTO prise_rdv(nom, prenom, date, temps) VALUES (?, ?, ?, ?)");
-            $request->execute(array($nom, $prenom, $date, $time));
-            header("location: ./reponse.php?success=1");
-            exit();
+            $sended = sendMailRdv($email, $nom, $prenom, $subject, $answer, $date, $time);
+            if ($sended) {
+                $request = $bdd->prepare("INSERT INTO prise_rdv(nom, prenom, email, date, temps) VALUES (?, ?, ?, ?, ?)");
+                $request->execute(array($nom, $prenom, $email, $date, $time));
+                header("location: ./reponse.php?success=1");
+                exit();
+            }
         }
     }
 
@@ -66,9 +67,11 @@
         if ($_POST['subject'] == "reponse") {
             $subject = "Demande de renseignement";
             $answer  = $_POST['area_answer'];
-            sendMail($email, $nom, $prenom, $subject, $answer);
-            header("location: ./reponse.php?success=1");
-            exit();
+            $sended = sendMail($email, $nom, $prenom, $subject, $answer);
+            if ($sended) {
+                header("location: ./reponse.php?success=1");
+                exit();
+            }
         }
     }
 
@@ -100,10 +103,11 @@
     <div id="container">
         <div id="child">
             <h2>Message de : <span style="color: #ca5b00;"><?php echo $nom.' '.$prenom?></span></h2>
-            <p>
-                <?php echo $msg ?>
-            </p>
-            
+            <section id="rappelMsg">
+                <p>
+                    <?php echo $msg ?>
+                </p>
+            </section>
             <button id="retour" type="button" onclick="location.href = './demande_renseignement.php'">Retour</button>
         </div>
 
@@ -112,7 +116,13 @@
             <?php 
                 if (isset($_GET['success'])) {
                     echo '<span class="success">Email envoyé</span>';
-                } 
+                }
+
+                if (isset($_GET['err'])) {
+                    if (isset($_GET['nbMsg'])) {
+                        echo '<span class="error">Aucun template disponible.</span>';
+                    }
+                }
             ?>
             <form id="form" action="./reponse.php" method="post">
                 <select required name="subject" id="subject">
@@ -175,6 +185,20 @@
                 sectionRdv.style.display = "none";
             }
         });
+
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1; //January is 0!
+        let yyyy = today.getFullYear();
+        if(dd<10){
+                dd='0'+dd
+            } 
+            if(mm<10){
+                mm='0'+mm
+            } 
+
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("dateRdv").setAttribute("min", today);
         
     </script>
 </body>

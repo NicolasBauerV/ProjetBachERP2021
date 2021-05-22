@@ -99,6 +99,11 @@ button#disabled {
     background-color: grey;
 }
 
+#disabledAsk {
+    box-shadow: none;
+    background-color: grey;
+}
+
 #disabled1 {
     background-color: grey;
     box-shadow: none;

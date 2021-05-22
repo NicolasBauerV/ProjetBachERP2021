@@ -1,6 +1,6 @@
 <?php
     require 'connexion_déconnexion/bdd_connexion.php';
-
+    require './emails/rdv_modif.php';
 // Début
     session_start();
 
@@ -11,6 +11,15 @@
         exit();
     }
 
+    $request = $bdd->prepare('SELECT COUNT(*) as nbRdv FROM prise_rdv');
+    $request->execute();
+    while ($donnee = $request->fetch()) {
+        if ($donnee['nbRdv'] == 0) {
+            header("location: ./accueil.php");
+            exit();
+        }
+    }
+
     if (isset($_GET['idRdv'])) {
         $rdvIdToDel = $_GET['idRdv'];
         $request = $bdd->prepare("DELETE FROM prise_rdv WHERE id = ?");
@@ -18,21 +27,34 @@
         header("location: ./consulter_rdv.php");
     }
 
-    if (!empty($_POST['newRdvDate']) && !empty($_POST['newRdvDate'])) {
+    //Modification rdv
+    if (!empty($_POST['newRdvDate']) && !empty($_POST['newRdvDate']) && !empty($_POST['motif'])) {
+        
+        // Récupération id du rdv
         $id = $_POST['nbrdvId'];
+        
+        // Récupération du motif
+        $motif = $_POST['motif'];
+        
+        //Sélectionne les infos d'une ligne
+        $request = $bdd->prepare('SELECT * FROM prise_rdv WHERE id = ?');
+        $request->execute(array($id));
+        while ($donnee = $request->fetch()) {
+            $nom = $donnee['nom'];
+            $prenom = $donnee['prenom'];
+            $email = $donnee['email'];
+        }
+
+        // Récupération infos date et time
         $newRdvDate = $_POST['newRdvDate'];
         $newRdvTime = $_POST['newRdvTime'];
-        $request = $bdd->prepare("UPDATE prise_rdv SET date = ?, temps = ? WHERE id = ?");
-        $request->execute(array($newRdvDate, $newRdvTime, $id));
-        header('location: ./consulter_rdv.php?mod=1');
-        exit();
-    }
-
-    $request = $bdd->prepare('SELECT COUNT(*) as nbRdv FROM prise_rdv');
-    $request->execute();
-    while ($donnee = $request->fetch()) {
-        if ($donnee['nbRdv'] == 0) {
-            header("location: ./accueil.php");
+        
+        // Envoie à la BDD et envoie d'email
+        $sended = sendMailRdv($email, $nom, $prenom, $motif, $newRdvDate, $newRdvTime);
+        if ($sended) {
+            $request = $bdd->prepare("UPDATE prise_rdv SET date = ?, temps = ? WHERE id = ?");
+            $request->execute(array($newRdvDate, $newRdvTime, $id));
+            header('location: ./consulter_rdv.php?mod=1');
             exit();
         }
     }
@@ -68,6 +90,7 @@
                             <th>Id</th>
                             <th>Nom</th>
                             <th>Prénom</th>
+                            <th>Email</th>
                             <th>Date</th>
                             <th>Temps</th>
                             <th>Modifier</th>
@@ -85,6 +108,7 @@
                                 <td><span id=\"rdvId".$i."\"/>".$donnees['id']."</span></td>
                                 <td>".$donnees['nom']."</td>
                                 <td>".$donnees['prenom']."</td>
+                                <td>".$donnees['email']."</td>
                                 <td>".$donnees['date']."</td>
                                 <td>".$donnees['temps']."</td>
                                 <td><button class=\"modifier\" id=\"btn_modif".$i."\">Modifier</button></td>
@@ -118,6 +142,9 @@
                     }
                 ?>
                 <h3>Nouveau rendez-vous :</h3>
+                <label for="motif"> Motif: 
+                    <input type="text" name="motif" id="motif" placeholder="Saisisssez un motif">
+                </label>
                 <label for="newRdvDate"> Date:
                     <input type="date" name="newRdvDate" id="newRdvDate">
                 </label>
@@ -188,6 +215,20 @@
                 });
             }
         }
+
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1; //January is 0!
+        let yyyy = today.getFullYear();
+        if(dd<10){
+                dd='0'+dd
+            } 
+            if(mm<10){
+                mm='0'+mm
+            } 
+
+        today = yyyy+'-'+mm+'-'+dd;
+        document.getElementById("newRdvDate").setAttribute("min", today);
     </script>
 </body>
 </html>

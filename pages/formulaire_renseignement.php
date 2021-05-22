@@ -25,9 +25,11 @@ ob_start(); // retenir l’envoi de données
             $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
             include_once './emails/email.php';
-            sendMail($email, $nom, $prenom); // envoie d'email
-            header('location:./formulaire_renseignement.php?success=1');
-            exit();
+            $sended = sendMail($email, $nom, $prenom); // envoie d'email
+            if ($sended) {
+                header('location:./formulaire_renseignement.php?success=1');
+                exit();
+            }
         }
 
         if (empty($newsletter)) {

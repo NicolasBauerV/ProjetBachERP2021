@@ -9,12 +9,20 @@
         exit();
     }
 
+    $request = $bdd->prepare('SELECT COUNT(*) as nbrenseignement FROM renseignements');
+    $request->execute();
+    while ($donnee = $request->fetch()) {
+        if ($donnee['nbrenseignement'] != 0) {
+            $btnActivateDemande = true;
+        }
+    }
+
     //Compter si il existe des rdv
     $request = $bdd->prepare('SELECT COUNT(*) as nbRdv FROM prise_rdv');
     $request->execute();
     while ($donnee = $request->fetch()) {
         if ($donnee['nbRdv'] != 0) {
-            $btnActivate = true;
+            $btnActivateRdv = true;
         }
     }
 ?>
@@ -35,7 +43,7 @@
     </header>
 
     <div id="main">
-        <button type="button" onclick="location.href = 'demande_renseignement.php'">Demandes de renseignement</button>
+        <button type="button" id="disabledAsk" onclick="location.href = 'demande_renseignement.php'">Demandes de renseignement</button>
 
         <button type="button" onclick="location.href = 'template.php'">Template Mail</button>
 
@@ -46,21 +54,21 @@
         <button type="button" id="btn_form" onclick="location.href = 'connexion_déconnexion/deconnexion.php'">Se déconnecter</button>
     </div>
 
-    <script type="text/javascript">
+    <script name="btn-rendez-vous" type="text/javascript">
         //Premiere fenetre à ouvrir
         const btn = document.querySelector('#disabled');
         btn.disabled = true;
-        let isBtnActivate = '<?php Print($btnActivate) ?>';
+        let btnActivateRdv = '<?php Print($btnActivateRdv) ?>';
         let counterArea1 = 1;
 
-        if (!isBtnActivate) {
+        if (!btnActivateRdv) {
             btn.addEventListener("click", () => {
                 alert(`Vous n'avez pas de rendez-vous en ce moment...`);
             });
         }
 
         // Si le bouton est activé alors on affiche la première fenêtre
-        if (isBtnActivate) {
+        if (btnActivateRdv) {
             btn.disabled = false;
 
             //Style pour le bouton
@@ -96,6 +104,62 @@
 
         //Style pour le bouton
         btn.onmouseup = function() {
+            btn.style.boxShadow = "none";
+            btn.style.backgroundColor = "#5f14ff";
+            btn.style.color = "white";
+        }
+    </script>
+
+    <script name="btn-demande-renseignement" type="text/javascript">
+        //Premiere fenetre à ouvrir
+        const btnAsk = document.querySelector('#disabledAsk');
+        btnAsk.disabled = true;
+        let btnActivateDemande = '<?php Print($btnActivateDemande) ?>';
+        let counterArea2 = 1;
+
+        if (!btnActivateDemande) {
+            btnAsk.addEventListener("click", () => {
+                alert(`Vous n'avez pas de rendez-vous en ce moment...`);
+            });
+        }
+
+        // Si le bouton est activé alors on affiche la première fenêtre
+        if (btnActivateDemande) {
+            btnAsk.disabled = false;
+
+            //Style pour le bouton
+            btnAsk.style.backgroundColor = "#5f14ff";
+            btnAsk.onmouseenter = function() {
+                btnAsk.style.boxShadow = "4px 3px 1px #014ca9";
+                btnAsk.style.backgroundColor = "#007bff";
+                btnAsk.style.color = "white";
+            }
+            //Style pour le bouton
+            btnAsk.onmouseout = function() {
+                btnAsk.style.boxShadow = "none";
+                btnAsk.style.backgroundColor = "#5f14ff";
+                btnAsk.style.color = "white";
+            }
+
+            //Affichage première fenêtre au click
+            btnAsk.addEventListener("click", () => {
+                window.location.replace('./demande_renseignement.php');
+            });
+        }
+
+        if (counterArea2 === 2) {
+            counterArea2 = 1;
+        }
+
+        //Style pour le bouton
+        btnAsk.onmousedown = function() {
+            btn.style.boxShadow = "0 0 6px 2px #000d7a inset";
+            btn.style.backgroundColor = "#007bff";
+            btn.style.color = "#cccccc";
+        }
+
+        //Style pour le bouton
+        btnAsk.onmouseup = function() {
             btn.style.boxShadow = "none";
             btn.style.backgroundColor = "#5f14ff";
             btn.style.color = "white";

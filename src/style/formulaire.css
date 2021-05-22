@@ -47,14 +47,15 @@ button {
 
 button:hover {
     transition: .25s;
-    background-color: rgb(164, 164, 164);
-    box-shadow: 2px 2px 2.5px 1px rgb(92, 92, 92);
+    background-color: rgb(122, 122, 122);
+    box-shadow: 2px 2px 2px 1px rgb(92, 92, 92);
 }
 
 button:active {
-    transition: .25s;
-    background-color: rgb(164, 164, 164);
-    box-shadow: 0 0 3px 3.5px rgb(92, 92, 92) inset;
+    transition: .15s;
+    background-color: rgb(187, 187, 187);
+    box-shadow: 0 0 2px 2.5px rgb(92, 92, 92) inset;
+    color: #707070;
 }
 
 input[type=checkbox] {

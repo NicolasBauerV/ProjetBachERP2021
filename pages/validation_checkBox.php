@@ -17,9 +17,12 @@ ob_start(); // retenir l’envoi de données
             try {
                 $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
                 $request->execute(array($valid, $email));
-                sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
-                header('Location: ../pages/validation_checkBox.php?success=1');
-                exit();
+                $sended = sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
+                if ($sended) {
+                    header('Location: ../pages/validation_checkBox.php?success=1');
+                    exit();
+                }
+                
             } catch (Exception $e) {
                 echo '<p class="error">Nous n\'avons pas pus obtenir vos informations, veuillez réessayer...';
                 sleep(4);
@@ -32,9 +35,11 @@ ob_start(); // retenir l’envoi de données
             try {
                 $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
                 $request->execute(array($valid, $email));
-                sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
-                header('Location: ./validation_checkBox.php?success=1');
-                die();
+                $sended = sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
+                if ($sended) {
+                    header('Location: ./validation_checkBox.php?success=1');
+                    exit();
+                }
             } catch (Exception $e) {
                 echo '<p class="error">Nous n\'avons pas pus obtenir vos informations, veuillez réessayer...';
                 sleep(4);
