@@ -3,9 +3,6 @@ ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
     require './emails/email.php';
     $emailVerif = $_COOKIE['email'];
-    // var_dump($emailVerif);
-    // var_dump($_COOKIE['nom']);
-    // var_dump($_COOKIE['prenom']);
     if (!empty($_POST["emailConf"])) {
         $email = $_POST["emailConf"];
         $valid = null;
@@ -87,18 +84,5 @@ ob_start(); // retenir l’envoi de données
         <br>
         <button type="submit" id="btn-sure">Envoyer</button>
     </form>
-
-   <!-- <script type="text/javascript">
-        document.write('<p class=\"error\">Votre email ne correspond pas à celui que vous avez envoyé auparavant...</p>');
-        // let emailInput = document.querySelector('#emailConf');
-        // let checkInput = document.querySelector('#newsletter-sure');
-        // if(emailInput.value != "") {
-        //     checkInput.setAttribute("required", "");
-        // }
-
-        // if(checkInput.checked) {
-        //     emailInput.setAttribute("required", "");
-        // }
-    </script> -->
 </body>
 </html>

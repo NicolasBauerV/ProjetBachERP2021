@@ -75,7 +75,7 @@
                 }
             ?>
             <form action="./template.php" method="post">
-                <textarea name="message" id="message" cols="80" rows="20" placeholder="Insérer votre texte ici..."></textarea>
+                <textarea name="message" id="message" cols="60" rows="15" placeholder="Insérer votre texte ici..."></textarea>
                 <br>
                 <button type="submit">Enregistrer</button>
             </form>

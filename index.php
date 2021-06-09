@@ -11,12 +11,10 @@
     </header>
 
     <div id="wrapper">
-        <div id="items">
-            <ul>
-                <button onclick="location.href='./pages/accueil.php'">Accueil administration</button>
-                <button onclick="location.href='./pages/formulaire_renseignement.php'">Formulaire renseignement</button>
-            </ul>
-        </div>
+        <ul>
+            <button onclick="location.href='./pages/accueil.php'">Accueil administration</button>
+            <button onclick="location.href='./pages/formulaire_renseignement.php'">Formulaire renseignement</button>
+        </ul>
     </div>
 </body>
 </html>

@@ -22,7 +22,7 @@ a {
 
 #wrapper {
     height: auto;
-    width: 50%;
+    width: 30%;
     margin: 0 auto;
     margin-top: 1em;
     display: flex;
@@ -43,25 +43,6 @@ button {
     border-radius: 7px;
 }
 
-button#btn_form {
-    background-color: #ff3300;
-    color: #FFF;
-}
-
-button#btn_form:hover {
-    box-shadow: 4px 3px 1px #bf4f00;
-    background-color: #ff6600;
-}
-
-button#btn_form:not(:hover) {
-    transition: 0.3s;
-    background-color: #ff3300;
-}
-
-button#btn_form:active {
-    box-shadow: 0 0 6px 3px #700000 inset;
-    background-color: #ae2100;
-}
 
 button:hover {
     cursor: pointer;

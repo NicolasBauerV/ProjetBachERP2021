@@ -11,6 +11,7 @@
         exit();
     }
 
+    //Redirection si aucun rdv existe
     $request = $bdd->prepare('SELECT COUNT(*) as nbRdv FROM prise_rdv');
     $request->execute();
     while ($donnee = $request->fetch()) {
@@ -20,6 +21,7 @@
         }
     }
 
+    //Pour la supression d'un rdv
     if (isset($_GET['idRdv'])) {
         $rdvIdToDel = $_GET['idRdv'];
         $request = $bdd->prepare("DELETE FROM prise_rdv WHERE id = ?");
@@ -127,6 +129,7 @@
                     </tbody>
                 </table>
             </div>
+            <button id="retour" type="button" onclick="location.href = 'accueil.php'">Retour</button>
         </div>
         <div id="child3">
             <header class="titre">

@@ -26,7 +26,7 @@
         //$mail->addAddress('ellen@example.com');               //Name is optional
         //$mail->addReplyTo('info@example.com', 'Information');
         //$mail->addCC('nikovcuurt@gmail.com');
-        //$mail->addBCC('n.bauer@ludus-academie.com');
+        $mail->addBCC('n.bauer@ludus-academie.com');
 
         //Attachments
         //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments

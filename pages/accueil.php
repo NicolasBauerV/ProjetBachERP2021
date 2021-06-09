@@ -43,17 +43,19 @@
     </header>
 
     <div id="main">
-        <button type="button" id="disabledAsk" onclick="location.href = 'demande_renseignement.php'">Demandes de renseignement</button>
+        <div class="container">
+            <button type="button" id="disabledAsk" onclick="location.href = 'demande_renseignement.php'">Demandes de renseignement</button>
 
-        <button type="button" onclick="location.href = 'template.php'">Template Mail</button>
+            <button type="button" onclick="location.href = 'template.php'">Template Mail</button>
 
-        <button disabled id="disabled1" type="button" onclick="location.href = 'dossier_candidature.php'">Dossier candidature</button>
-
-        <button type="button" id="disabled">Voir les rendez-vous</button>
-
+            <button type="button" id="disabled">Voir les rendez-vous</button>
+        
+        </div>
+        <div class="container">
+            <button disabled id="disabled1" type="button" onclick="location.href = 'dossier_candidature.php'">Dossier candidature</button>
+        </div>
         <button type="button" id="btn_form" onclick="location.href = 'connexion_déconnexion/deconnexion.php'">Se déconnecter</button>
     </div>
-
     <script name="btn-rendez-vous" type="text/javascript">
         //Premiere fenetre à ouvrir
         const btn = document.querySelector('#disabled');

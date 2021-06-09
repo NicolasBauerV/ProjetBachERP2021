@@ -38,6 +38,12 @@ header ul li a {
     border-radius: 15px;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+}
+
 #form-mail {
     display: none;
     width: max-content;
@@ -48,6 +54,7 @@ header ul li a {
 }
 
 button {
+    margin: .5em 0;
     font-size: 16px;
     padding: .7em;
     font-weight: bold;

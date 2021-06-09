@@ -3,11 +3,11 @@ ob_start(); // retenir l’envoi de données
     require 'connexion_déconnexion/bdd_connexion.php';
     // traitement des informations
     if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['cycle']) && !empty($_POST['email']) && !empty($_POST['tel']) && !empty($_POST['message'])) {
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
+        $nom = htmlspecialchars($_POST['nom']);
+        $prenom = htmlspecialchars($_POST['prenom']);
         $formation = $_POST['cycle'];
-        $email = $_POST['email'];
-        $tel = $_POST['tel'];
+        $email = htmlspecialchars($_POST['email']);
+        $tel = htmlspecialchars($_POST['tel']);
         $newsletter = null;
         if (isset($_POST['newsletter'])) {
             $newsletter = $_POST['newsletter'];
@@ -15,9 +15,9 @@ ob_start(); // retenir l’envoi de données
         $message = $_POST['message'];
 
         //Cookies
-        setcookie('email', htmlspecialchars($email), time() + 24 * 3600, null, null, false, true);
-        setcookie('nom', htmlspecialchars($nom), time() + 24 * 3600, null, null, false, true);
-        setcookie('prenom', htmlspecialchars($prenom), time() + 24 * 3600, null, null, false, true);
+        setcookie('email', $email, time() + 24 * 3600, null, null, false, true);
+        setcookie('nom', $nom, time() + 24 * 3600, null, null, false, true);
+        setcookie('prenom', $prenom, time() + 24 * 3600, null, null, false, true);
 
 
         if ($newsletter == "on") {
