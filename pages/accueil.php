@@ -1,4 +1,5 @@
 <?php
+ob_start();
     require 'connexion_déconnexion/bdd_connexion.php';
 
 // Début
@@ -25,6 +26,7 @@
             $btnActivateRdv = true;
         }
     }
+    ob_end_flush();
 ?>
 
 <!Doctype html>

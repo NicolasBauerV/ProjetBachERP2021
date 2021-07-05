@@ -1,6 +1,6 @@
 <?php
     require 'connexion_déconnexion/bdd_connexion.php';
-
+    ob_start();
 // Début
     session_start();
     //Si le client ne s'est pas connecté on renvoie à la page de connexion
@@ -28,6 +28,7 @@
 
     $request = $bdd->prepare('SELECT * from renseignements');
     $request->execute();
+    ob_end_flush();
 ?>
 
 <!Doctype html>

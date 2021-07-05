@@ -18,14 +18,24 @@ ob_start(); // retenir l’envoi de données
         setcookie('email', $email, time() + 24 * 3600, null, null, false, true);
         setcookie('nom', $nom, time() + 24 * 3600, null, null, false, true);
         setcookie('prenom', $prenom, time() + 24 * 3600, null, null, false, true);
-
+        setcookie('cycle', $formation, time() + 24 * 3600, null, null, false, true);
 
         if ($newsletter == "on") {
             $newsletter = '1';
             $request = $bdd->prepare('INSERT INTO renseignements (nom,prenom,email,formations,tel,newletters,msg) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $request->execute(array($nom, $prenom, $email, $formation, $tel, $newsletter, $message));
             include_once './emails/email.php';
-            $sended = sendMail($email, $nom, $prenom); // envoie d'email
+            switch ($formation) {
+                case 'Cycle-1':
+                    $sended = sendMail($email, $nom, $prenom, 1); // envoie d'email
+                    break;
+                case 'Cycle-2':
+                    $sended = sendMail($email, $nom, $prenom, 2); // envoie d'email
+                    break;
+                case 'Cycle-3':
+                    $sended = sendMail($email, $nom, $prenom, 3); // envoie d'email
+                    break;
+            }
             if ($sended) {
                 header('location:./formulaire_renseignement.php?success=1');
                 exit();

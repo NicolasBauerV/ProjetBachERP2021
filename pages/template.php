@@ -1,6 +1,6 @@
 <?php
     require 'connexion_déconnexion/bdd_connexion.php';
-
+    ob_start();
 // Début
     session_start();
 
@@ -46,6 +46,7 @@
 
     $request = $bdd->prepare('SELECT * FROM message_perso');
     $request->execute();
+    ob_end_flush();
 ?>
 
 <!Doctype html>

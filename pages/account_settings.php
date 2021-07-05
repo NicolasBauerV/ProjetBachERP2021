@@ -1,4 +1,5 @@
 <?php
+ob_start();
     require 'connexion_déconnexion/bdd_connexion.php';
     session_start();
 
@@ -40,7 +41,7 @@
         $req = $bdd->prepare('UPDATE users SET password = ? WHERE password = ?');
         $req->execute(array($new_password, $old_password));
     }
-
+ob_end_flush();
 
 ?>
 <!Doctype html>

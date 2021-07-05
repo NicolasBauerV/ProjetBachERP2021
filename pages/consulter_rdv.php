@@ -1,6 +1,7 @@
 <?php
     require 'connexion_déconnexion/bdd_connexion.php';
     require './emails/rdv_modif.php';
+    ob_start();
 // Début
     session_start();
 
@@ -63,6 +64,7 @@
 
     $request = $bdd->prepare('SELECT * FROM prise_rdv');
     $request->execute();
+    ob_end_flush();
 ?>
 
 <!Doctype html>

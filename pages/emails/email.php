@@ -7,7 +7,7 @@
     require 'PHPMailer/src/PHPMailer.php';
     require 'PHPMailer/src/SMTP.php';
 
-    function sendMail($email, $nom, $prenom) {
+    function sendMail($email, $nom, $prenom, $numBrochure) {
         $isSended = false;
         $fullName = $nom.' '.$prenom;
         $mail = new PHPMailer;
@@ -34,14 +34,15 @@
 
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'Demande de renseignement';
-        $mail->Body    = '<div style="font-size: 1em; width: max-content; height: auto;">
-                              <h1>Merci de votre inscription <span style="color: #ff7070;">'.$fullName.'</span></h1>
-                              <p>
-                                En cliquant sur ce <a href="https://bachelor-proj.000webhostapp.com/pages/brochures.html">lien</a> vous pourrez télécharger la brochure.  
-                              </p>
-                          </div>';
-        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                $mail->Subject = 'Demande de renseignement';
+                $mail->Body    = '<div style="font-size: 1em; width: max-content; height: auto;">
+                                    <h1>Merci de votre inscription <span style="color: #ff7070;">'.$fullName.'</span></h1>
+                                    <p>
+                                        En cliquant sur ce <a href="https://bachelor-proj.000webhostapp.com/download_files/brochure-cycle-'.$numBrochure.'.pdf">lien</a> vous pourrez télécharger la brochure.  
+                                    </p>
+                                </div>';
+                $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+        
         
         if(!$mail->send()){
             echo "Mailer Error: " . $mail->ErrorInfo;

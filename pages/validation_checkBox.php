@@ -14,7 +14,17 @@ ob_start(); // retenir l’envoi de données
             try {
                 $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
                 $request->execute(array($valid, $email));
-                $sended = sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
+                switch ($_COOKIE['cycle']) {
+                    case 'Cycle-1':
+                        $sended = sendMail($email, $nom, $prenom, 1); // envoie d'email
+                        break;
+                    case 'Cycle-2':
+                        $sended = sendMail($email, $nom, $prenom, 2); // envoie d'email
+                        break;
+                    case 'Cycle-3':
+                        $sended = sendMail($email, $nom, $prenom, 3); // envoie d'email
+                        break;
+                }
                 if ($sended) {
                     header('Location: ../pages/validation_checkBox.php?success=1');
                     exit();
@@ -32,7 +42,17 @@ ob_start(); // retenir l’envoi de données
             try {
                 $request = $bdd->prepare('UPDATE renseignements SET newletters = ? WHERE email = ?');
                 $request->execute(array($valid, $email));
-                $sended = sendMail($_COOKIE['email'], $_COOKIE['nom'], $_COOKIE['prenom']); // envoie d'email
+                switch ($_COOKIE['cycle']) {
+                    case 'Cycle-1':
+                        $sended = sendMail($email, $nom, $prenom, 1); // envoie d'email
+                        break;
+                    case 'Cycle-2':
+                        $sended = sendMail($email, $nom, $prenom, 2); // envoie d'email
+                        break;
+                    case 'Cycle-3':
+                        $sended = sendMail($email, $nom, $prenom, 3); // envoie d'email
+                        break;
+                }
                 if ($sended) {
                     header('Location: ./validation_checkBox.php?success=1');
                     exit();

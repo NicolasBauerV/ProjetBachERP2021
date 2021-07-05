@@ -1,4 +1,5 @@
 <?php
+ob_start();
     require 'connexion_déconnexion/bdd_connexion.php';
     // Démarrage de la session
     session_start();
@@ -31,6 +32,7 @@
         header('location: ../pages/connexion.php?error=1');
         exit();
     }
+    ob_end_flush();
 ?>
 
 <!DOCTYPE html>

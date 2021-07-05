@@ -20,14 +20,20 @@ a {
     color: white;
 }
 
+ul {
+    padding: 0;
+    margin: 0;
+}
+
 #wrapper {
-    height: auto;
-    width: 30%;
+    height: 10vh;
+    width: 75vh;
     margin: 0 auto;
     margin-top: 1em;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-content: center;
     background-color: #FFF;
     box-shadow: 4px 4px 3px rgb(69, 69, 69);
     border-radius: 15px;
@@ -39,6 +45,7 @@ button {
     font-weight: bold;
     background-color: #5f14ff;
     color: #FFF;
+    margin-right: .5em;
     border-style: none;
     border-radius: 7px;
 }

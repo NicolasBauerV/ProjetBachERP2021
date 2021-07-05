@@ -1,7 +1,7 @@
 <?php
     require 'connexion_déconnexion/bdd_connexion.php';
     require './emails/mail_reponse.php';
-
+    ob_start();
 // Début
     session_start();
     $idUser = null;
@@ -81,7 +81,7 @@
         $request->execute(array($idMsgAnsw));
         $msgAns = $request->fetchColumn(0);
     }
-
+    ob_end_flush();
 ?>
 
 <!Doctype html>
@@ -108,7 +108,6 @@
                     <?php echo $msg ?>
                 </p>
             </section>
-            <button id="retour" type="button" onclick="location.href = './demande_renseignement.php'">Retour</button>
         </div>
 
         <div id="main">
