@@ -157,16 +157,16 @@ ob_start();
 
         //Style pour le bouton
         btnAsk.onmousedown = function() {
-            btn.style.boxShadow = "0 0 6px 2px #000d7a inset";
-            btn.style.backgroundColor = "#007bff";
-            btn.style.color = "#cccccc";
+            btnAsk.style.boxShadow = "0 0 6px 2px #000d7a inset";
+            btnAsk.style.backgroundColor = "#007bff";
+            btnAsk.style.color = "#cccccc";
         }
 
         //Style pour le bouton
         btnAsk.onmouseup = function() {
-            btn.style.boxShadow = "none";
-            btn.style.backgroundColor = "#5f14ff";
-            btn.style.color = "white";
+            btnAsk.style.boxShadow = "none";
+            btnAsk.style.backgroundColor = "#5f14ff";
+            btnAsk.style.color = "white";
         }
     </script>
 </body>
